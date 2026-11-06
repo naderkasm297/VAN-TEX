@@ -1,0 +1,3715 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#020D22" />
+<title> VAN  TEX — Tests  </title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet" />
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   🎛️ تطبيق الثيم قبل الرسم (منع الومضة)
+   ══════════════════════════════════════════════════════════════ */
+(function () {
+  try {
+    if (localStorage.getItem('taqyeem.v5.theme') === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch (e) {}
+})();
+</script>
+
+<style>
+/* ══════════════════════════════════════════════════════════════
+   1) نظام ال — كحلي سايبر + سماوي نيون زجاج
+   ══════════════════════════════════════════════════════════════ */
+:root {
+  /* 🔵 الألوان الأساسية */
+  --c1: #00CFFF;
+  --c2: #008CFF;
+  --c3: #00E5C3;
+  --c1-rgb: 0, 207, 255;
+  --c2-rgb: 0, 140, 255;
+  --c3-rgb: 0, 229, 195;
+
+  /* ⚫ الخلفيات */
+  --bg: #020D22;
+  --bg-2: #061A35;
+  --ink: #F4FAFF;
+  --muted: #A9C7DF;
+  --line: rgba(0, 207, 255, 0.10);
+  --line-2: rgba(0, 207, 255, 0.30);
+
+  /* 🧊 الزجاج */
+  --g1: linear-gradient(160deg, rgba(16, 43, 73, 0.72), rgba(6, 26, 53, 0.48));
+  --g2: linear-gradient(160deg, rgba(16, 43, 73, 0.88), rgba(6, 26, 53, 0.62));
+  --g3: linear-gradient(160deg, rgba(16, 43, 73, 0.95), rgba(6, 26, 53, 0.75));
+  --stroke: rgba(8, 126, 174, 0.55);
+  --stroke-soft: rgba(8, 126, 174, 0.25);
+  --inner: inset 0 1px 0 rgba(0, 207, 255, 0.14);
+  --inner-2: inset 0 -1px 0 rgba(0, 0, 0, 0.32);
+
+  --sh: 0 16px 44px rgba(0, 10, 26, 0.6);
+  --sh-lg: 0 34px 90px rgba(0, 8, 22, 0.78);
+
+  /* 🌈 التدرّجات */
+  --grad: linear-gradient(135deg, var(--c1), var(--c3));
+  --grad-3: linear-gradient(135deg, var(--c1) 0%, var(--c2) 55%, var(--c3) 100%);
+
+  /* ✅ الحالات */
+  --ok: #00E5C3;
+  --ok-rgb: 0, 229, 195;
+  --bad: #ff5d7d;
+  --bad-rgb: 255, 93, 125;
+  --warn: #fbbf24;
+
+  --r: 26px;
+}
+
+/* ☀️ وضع نهاري (اختياري) بنفس الهوية السماوية */
+html[data-theme="light"] {
+  --bg: #e8f4fb;
+  --bg-2: #d9ecf8;
+  --ink: #061a35;
+  --muted: #46657f;
+  --line: rgba(6, 26, 53, 0.12);
+  --line-2: rgba(6, 26, 53, 0.2);
+  --g1: linear-gradient(160deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.6));
+  --g2: linear-gradient(160deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.78));
+  --g3: #fff;
+  --stroke: rgba(8, 126, 174, 0.35);
+  --stroke-soft: rgba(8, 126, 174, 0.16);
+  --inner: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --inner-2: inset 0 -1px 0 rgba(6, 26, 53, 0.05);
+  --sh: 0 16px 44px rgba(2, 30, 60, 0.12);
+  --sh-lg: 0 30px 80px rgba(2, 30, 60, 0.16);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   2) الأساسيات
+   ══════════════════════════════════════════════════════════════ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: 'Tajawal', system-ui, sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 26px 16px 64px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  overflow-x: hidden;
+  transition: background .4s, color .4s;
+  background:
+    radial-gradient(1100px 720px at 8% -14%, rgba(var(--c1-rgb), .26), transparent 62%),
+    radial-gradient(900px 640px at 96% -8%, rgba(var(--c2-rgb), .20), transparent 60%),
+    radial-gradient(980px 760px at 52% 114%, rgba(var(--c3-rgb), .10), transparent 62%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 55%, var(--bg) 100%);
+}
+
+html[data-theme="light"] body {
+  background:
+    radial-gradient(1100px 720px at 8% -14%, rgba(var(--c1-rgb), .20), transparent 62%),
+    radial-gradient(900px 640px at 96% -8%, rgba(var(--c2-rgb), .16), transparent 60%),
+    radial-gradient(980px 760px at 52% 114%, rgba(var(--c3-rgb), .12), transparent 62%),
+    var(--bg);
+}
+
+::selection { background: rgba(var(--c1-rgb), .5); color: #fff; }
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--c1), var(--c2));
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.hidden { display: none !important; }
+button { font-family: inherit; }
+
+/* ══════════════════════════════════════════════════════════════
+   3) الخلفية المتحركة
+   ══════════════════════════════════════════════════════════════ */
+.bg-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: .55;
+  animation: orbFloat 22s ease-in-out infinite;
+}
+html[data-theme="light"] .orb { opacity: .30; }
+
+.orb.o1 { width: 450px; height: 450px; top: -160px; right: -120px;
+  background: radial-gradient(circle, rgba(var(--c1-rgb), .85), transparent 68%); }
+.orb.o2 { width: 400px; height: 400px; bottom: -170px; left: -120px;
+  background: radial-gradient(circle, rgba(var(--c2-rgb), .75), transparent 68%);
+  animation-duration: 27s; animation-delay: -7s; }
+.orb.o3 { width: 340px; height: 340px; top: 44%; left: 46%;
+  background: radial-gradient(circle, rgba(var(--c3-rgb), .38), transparent 68%);
+  animation-duration: 32s; animation-delay: -14s; }
+
+@keyframes orbFloat {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%      { transform: translate3d(-42px, 32px, 0) scale(1.08); }
+  66%      { transform: translate3d(36px, -26px, 0) scale(.94); }
+}
+
+.grid-overlay {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .30;
+  background-image:
+    linear-gradient(rgba(0, 207, 255, .055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 207, 255, .055) 1px, transparent 1px);
+  background-size: 66px 66px;
+  mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 76%);
+  -webkit-mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 76%);
+}
+html[data-theme="light"] .grid-overlay { opacity: .4; }
+
+/* ══════════════════════════════════════════════════════════════
+   4) الحاوية + الهيدر + الفوتر
+   ══════════════════════════════════════════════════════════════ */
+.app { position: relative; z-index: 2; width: 100%; max-width: 840px; }
+
+.site-head {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; flex-wrap: wrap; margin-bottom: 18px; padding: 0 4px;
+}
+
+.head-brand { display: flex; align-items: center; gap: 11px; font-weight: 900; font-size: 1.04rem; }
+.head-brand .mark {
+  width: 42px; height: 42px; border-radius: 14px;
+  background: var(--grad-3);
+  display: flex; justify-content: center; align-items: center;
+  font-size: 1.2rem;
+  box-shadow: 0 10px 30px rgba(var(--c1-rgb), .45), var(--inner);
+}
+
+.dev-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 30px;
+  font-size: .78rem; font-weight: 800;
+  background: var(--g1); border: 1px solid var(--stroke);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: var(--sh), var(--inner);
+  white-space: nowrap;
+}
+.dev-chip .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--c1); box-shadow: 0 0 12px var(--c1);
+  animation: blink 2.2s ease-in-out infinite;
+}
+@keyframes blink { 50% { opacity: .35; } }
+
+.site-foot { margin-top: 24px; text-align: center; font-size: .77rem; color: var(--muted); line-height: 2; }
+.site-foot b { color: var(--ink); font-weight: 900; }
+.site-foot .foot-line {
+  display: inline-block; padding: 9px 22px; border-radius: 30px;
+  background: var(--g1); border: 1px solid var(--stroke-soft);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   5) الكروت الزجاجية
+   ══════════════════════════════════════════════════════════════ */
+.card {
+  position: relative;
+  border-radius: var(--r);
+  background: var(--g1);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(28px) saturate(155%);
+  -webkit-backdrop-filter: blur(28px) saturate(155%);
+  box-shadow: var(--sh-lg), var(--inner), var(--inner-2);
+  overflow: hidden;
+  transition: background .4s, border-color .4s;
+}
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(var(--c1-rgb), .8), rgba(var(--c3-rgb), .5), transparent);
+  pointer-events: none;
+}
+.card-body { padding: 32px; }
+
+.panel {
+  border-radius: 20px;
+  background: rgba(16, 43, 73, .38);
+  border: 1px solid var(--stroke-soft);
+  padding: 20px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+html[data-theme="light"] .panel { background: rgba(255, 255, 255, .66); }
+
+/* ══════════════════════════════════════════════════════════════
+   6) الأزرار الزجاجية
+   ══════════════════════════════════════════════════════════════ */
+.btn {
+  position: relative;
+  display: inline-flex; justify-content: center; align-items: center; gap: 9px;
+  width: 100%; padding: 16px 22px;
+  border: 1px solid var(--stroke);
+  border-radius: 15px;
+  font-family: inherit; font-size: .98rem; font-weight: 800;
+  color: var(--ink);
+  cursor: pointer; text-decoration: none;
+  overflow: hidden;
+  background: var(--g2);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: var(--sh), var(--inner), var(--inner-2);
+  transition: transform .2s, box-shadow .25s, border-color .25s, background .25s, color .25s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(115deg, transparent 22%, rgba(0, 207, 255, .25) 48%, transparent 74%);
+  transform: translateX(-130%);
+  transition: transform .8s ease;
+  pointer-events: none;
+}
+.btn:hover::after { transform: translateX(130%); }
+.btn:hover { transform: translateY(-2px); border-color: var(--line-2); }
+.btn:active { transform: scale(.985); }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none !important; box-shadow: none; }
+.btn:disabled::after { display: none; }
+
+.btn-primary {
+  background: var(--grad-3);
+  border-color: transparent;
+  color: #021527;
+  box-shadow: 0 14px 38px rgba(var(--c1-rgb), .45), var(--inner);
+}
+.btn-primary:hover { box-shadow: 0 20px 50px rgba(var(--c1-rgb), .6), var(--inner); }
+
+.btn-ghost { background: var(--g1); color: var(--ink); }
+.btn-ghost:hover { color: var(--c1); border-color: rgba(var(--c1-rgb), .6); }
+
+.btn-ok {
+  background: linear-gradient(135deg, rgba(var(--c3-rgb), .95), rgba(var(--c1-rgb), .9));
+  color: #021527; border-color: transparent;
+  box-shadow: 0 14px 38px rgba(var(--c3-rgb), .32), var(--inner);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, rgba(var(--bad-rgb), .92), rgba(190, 24, 93, .92));
+  color: #fff; border-color: transparent;
+  box-shadow: 0 14px 38px rgba(var(--bad-rgb), .3), var(--inner);
+}
+
+.btn-sm { width: auto; padding: 11px 18px; font-size: .85rem; border-radius: 13px; }
+
+.btn-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-row .btn { flex: 1 1 150px; }
+
+/* أزرار الأيقونات */
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 9px 16px; border-radius: 30px;
+  font-size: .79rem; font-weight: 800;
+  color: var(--muted);
+  background: var(--g1);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  box-shadow: var(--inner);
+  cursor: pointer;
+  transition: .22s;
+  -webkit-tap-highlight-color: transparent;
+}
+.icon-btn:hover {
+  color: var(--c1);
+  border-color: rgba(var(--c1-rgb), .6);
+  box-shadow: 0 8px 24px rgba(var(--c1-rgb), .2), var(--inner);
+}
+.icon-btn.on {
+  background: var(--grad);
+  color: #021527; border-color: transparent;
+  box-shadow: 0 8px 24px rgba(var(--c1-rgb), .42), var(--inner);
+}
+.icon-btn.danger:hover {
+  color: var(--bad);
+  border-color: rgba(var(--bad-rgb), .6);
+  box-shadow: 0 8px 24px rgba(var(--bad-rgb), .2), var(--inner);
+}
+
+/* زر الثيم */
+.theme-fab {
+  position: fixed; top: 18px; left: 18px; z-index: 300;
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid var(--stroke);
+  background: var(--g2);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  color: var(--ink); font-size: 1.05rem;
+  cursor: pointer;
+  display: flex; justify-content: center; align-items: center;
+  box-shadow: var(--sh), var(--inner);
+  transition: .3s;
+}
+.theme-fab:hover { transform: scale(1.1) rotate(-12deg); border-color: var(--c1); }
+
+/* ══════════════════════════════════════════════════════════════
+   7) الحقول
+   ══════════════════════════════════════════════════════════════ */
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: .8rem; font-weight: 800; color: var(--muted); margin-bottom: 8px; }
+.field input,
+.field textarea {
+  width: 100%; padding: 13px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  background: rgba(16, 43, 73, .35);
+  font-family: inherit; font-size: .94rem; color: var(--ink);
+  outline: none; transition: .22s;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--inner);
+}
+html[data-theme="light"] .field input,
+html[data-theme="light"] .field textarea { background: rgba(255, 255, 255, .8); }
+.field textarea { resize: vertical; min-height: 78px; line-height: 1.85; }
+.field input::placeholder,
+.field textarea::placeholder { color: var(--muted); opacity: .7; }
+.field input:focus,
+.field textarea:focus {
+  border-color: rgba(var(--c1-rgb), .78);
+  background: rgba(16, 43, 73, .5);
+  box-shadow: 0 0 0 4px rgba(var(--c1-rgb), .14), var(--inner);
+}
+
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+/* ══════════════════════════════════════════════════════════════
+   8) القوائم الزجاجية المخصّصة
+   ══════════════════════════════════════════════════════════════ */
+.sel { position: relative; }
+.sel-btn {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; padding: 13px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  background: rgba(16, 43, 73, .35);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  box-shadow: var(--inner);
+  color: var(--ink);
+  font-size: .93rem; font-weight: 700;
+  cursor: pointer;
+  transition: .22s;
+}
+html[data-theme="light"] .sel-btn { background: rgba(255, 255, 255, .8); }
+.sel-btn:hover { border-color: rgba(var(--c1-rgb), .55); }
+.sel.open .sel-btn {
+  border-color: rgba(var(--c1-rgb), .8);
+  box-shadow: 0 0 0 4px rgba(var(--c1-rgb), .13), var(--inner);
+}
+.sel-btn .chev {
+  width: 9px; height: 9px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  opacity: .65;
+  transition: transform .25s;
+  flex-shrink: 0;
+}
+.sel.open .sel-btn .chev { transform: rotate(-135deg) translateY(-2px); }
+
+.sel-menu {
+  position: absolute; top: calc(100% + 8px); right: 0; left: 0;
+  z-index: 50;
+  padding: 7px;
+  border-radius: 16px;
+  background: rgba(2, 13, 34, .92);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(26px) saturate(170%);
+  -webkit-backdrop-filter: blur(26px) saturate(170%);
+  box-shadow: 0 26px 70px rgba(0, 8, 22, .65), var(--inner);
+  opacity: 0; visibility: hidden;
+  transform: translateY(-8px) scale(.98);
+  transform-origin: top center;
+  transition: .22s cubic-bezier(.22, 1, .36, 1);
+  max-height: 280px; overflow-y: auto;
+}
+html[data-theme="light"] .sel-menu { background: rgba(255, 255, 255, .95); }
+.sel.open .sel-menu { opacity: 1; visibility: visible; transform: none; }
+
+.sel-opt {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 11px 13px;
+  border: none; border-radius: 11px;
+  background: transparent; color: var(--ink);
+  font-size: .88rem; font-weight: 700; text-align: right;
+  cursor: pointer; transition: .16s;
+}
+.sel-opt:hover { background: rgba(var(--c1-rgb), .14); color: var(--c1); }
+.sel-opt.on {
+  background: linear-gradient(135deg, rgba(var(--c1-rgb), .32), rgba(var(--c2-rgb), .18));
+  color: #eafaff;
+  box-shadow: inset 0 0 0 1px rgba(var(--c1-rgb), .5);
+}
+html[data-theme="light"] .sel-opt.on { color: #053a56; }
+.sel-opt.on::after { content: '✓'; font-weight: 900; font-size: .8rem; }
+
+/* ══════════════════════════════════════════════════════════════
+   9) الشاشات
+   ══════════════════════════════════════════════════════════════ */
+.screen { display: none; }
+.screen.active { display: block; animation: screenIn .5s cubic-bezier(.22, 1, .36, 1); }
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(26px) scale(.988); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   10) شاشة البداية
+   ══════════════════════════════════════════════════════════════ */
+.cover {
+  position: relative; overflow: hidden;
+  padding: 34px 34px 30px;
+  border-bottom: 1px solid var(--stroke-soft);
+  background:
+    radial-gradient(720px 300px at 88% -20%, rgba(var(--c2-rgb), .30), transparent 70%),
+    radial-gradient(620px 320px at 6% 120%, rgba(var(--c1-rgb), .26), transparent 70%),
+    linear-gradient(135deg, rgba(16, 43, 73, .65), rgba(2, 13, 34, .35));
+}
+.cover::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 82% 12%, rgba(0, 207, 255, .12), transparent 42%);
+  pointer-events: none;
+}
+.cover-inner { position: relative; z-index: 1; }
+.cover-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.cover-brand { display: flex; align-items: center; gap: 11px; font-weight: 900; font-size: 1.06rem; }
+.cover-brand .box {
+  width: 44px; height: 44px; border-radius: 14px;
+  background: rgba(0, 207, 255, .14);
+  border: 1px solid rgba(0, 207, 255, .35);
+  display: flex; justify-content: center; align-items: center;
+  font-size: 1.3rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--inner);
+}
+.pill-soft {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 15px; border-radius: 30px;
+  font-size: .73rem; font-weight: 800; color: #eafaff;
+  background: rgba(0, 207, 255, .12);
+  border: 1px solid rgba(0, 207, 255, .3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.cover h1 {
+  margin-top: 24px;
+  font-size: 2rem; font-weight: 900; line-height: 1.45;
+  background: linear-gradient(100deg, #ffffff 8%, rgba(244, 250, 255, .84) 52%, rgba(var(--c1-rgb), 1) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.cover .sub { margin-top: 8px; font-size: .92rem; line-height: 1.95; color: rgba(169, 199, 223, .92); max-width: 580px; }
+.cover .dev-tag {
+  margin-top: 16px;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .78rem; font-weight: 800;
+  color: rgba(244, 250, 255, .92);
+  padding: 7px 15px; border-radius: 30px;
+  background: rgba(2, 13, 34, .45);
+  border: 1px solid rgba(0, 207, 255, .22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* الإحصائيات */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+.stat {
+  padding: 17px 8px; text-align: center;
+  border-radius: 18px;
+  background: var(--g1);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--inner);
+  transition: .25s;
+}
+.stat:hover {
+  transform: translateY(-3px);
+  border-color: rgba(var(--c1-rgb), .5);
+  box-shadow: 0 14px 36px rgba(var(--c1-rgb), .18), var(--inner);
+}
+.stat .num {
+  font-size: 1.5rem; font-weight: 900;
+  background: var(--grad-3);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.stat .lbl { font-size: .72rem; color: var(--muted); margin-top: 4px; font-weight: 700; }
+
+.sec-title {
+  display: flex; align-items: center; gap: 10px;
+  font-size: .88rem; font-weight: 900; color: var(--muted);
+  margin: 26px 0 13px;
+}
+.sec-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--stroke-soft), transparent);
+}
+
+/* سجل المحاولات */
+.history-list { display: flex; flex-direction: column; gap: 9px; }
+.history-item {
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  padding: 13px 16px; border-radius: 15px;
+  background: rgba(16, 43, 73, .3);
+  border: 1px solid var(--stroke-soft);
+  font-size: .85rem; transition: .22s;
+}
+html[data-theme="light"] .history-item { background: rgba(255, 255, 255, .72); }
+.history-item:hover { border-color: rgba(var(--c1-rgb), .45); transform: translateX(-3px); }
+.history-item .h-name { font-weight: 800; font-size: .88rem; }
+.history-item .h-date { color: var(--muted); font-size: .76rem; margin-top: 3px; }
+
+.history-score { font-weight: 900; padding: 5px 13px; border-radius: 20px; font-size: .8rem; white-space: nowrap; }
+.history-score.high { background: rgba(var(--ok-rgb), .16); color: var(--ok); border: 1px solid rgba(var(--ok-rgb), .32); }
+.history-score.mid  { background: rgba(251, 191, 36, .14); color: var(--warn); border: 1px solid rgba(251, 191, 36, .32); }
+.history-score.low  { background: rgba(var(--bad-rgb), .14); color: var(--bad); border: 1px solid rgba(var(--bad-rgb), .32); }
+
+.empty-note {
+  color: var(--muted); font-size: .84rem; text-align: center;
+  padding: 16px; border-radius: 15px;
+  border: 1px dashed var(--stroke);
+  background: rgba(16, 43, 73, .18);
+  line-height: 1.9;
+}
+
+.resume-box {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; flex-wrap: wrap;
+  padding: 14px 18px; margin-bottom: 20px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(var(--c1-rgb), .15), rgba(var(--c2-rgb), .1));
+  border: 1px solid rgba(var(--c1-rgb), .38);
+  font-size: .84rem; font-weight: 700;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   11) شاشة الاختبار
+   ══════════════════════════════════════════════════════════════ */
+.quiz-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.quiz-head .side { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.quiz-meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+
+.pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 16px; border-radius: 30px;
+  font-size: .81rem; font-weight: 800;
+  color: var(--muted);
+  background: var(--g1);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--sh), var(--inner);
+  white-space: nowrap;
+}
+.pill.questions { color: var(--c1); border-color: rgba(var(--c1-rgb), .38); }
+.pill.timer { color: var(--c2); border-color: rgba(var(--c2-rgb), .38); }
+.pill.score { color: var(--ok); border-color: rgba(var(--ok-rgb), .38); }
+.pill.timer.warn {
+  color: var(--bad);
+  border-color: rgba(var(--bad-rgb), .62);
+  background: rgba(var(--bad-rgb), .1);
+  animation: pulseWarn 1s infinite;
+}
+@keyframes pulseWarn { 50% { opacity: .5; } }
+
+.progress-track {
+  height: 8px; border-radius: 20px;
+  background: rgba(16, 43, 73, .5);
+  overflow: hidden; margin-bottom: 20px;
+  border: 1px solid var(--stroke-soft);
+}
+.progress-fill {
+  height: 100%; width: 0%;
+  border-radius: 20px;
+  background: var(--grad-3);
+  box-shadow: 0 0 18px rgba(var(--c1-rgb), .55);
+  transition: width .5s cubic-bezier(.22, 1, .36, 1);
+}
+
+/* كارت السؤال — محايد، مش بيتلوّن أحمر */
+.q-card {
+  position: relative;
+  padding: 26px;
+  margin-bottom: 16px;
+  border-radius: 20px;
+  background: var(--g2);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(24px) saturate(155%);
+  -webkit-backdrop-filter: blur(24px) saturate(155%);
+  box-shadow: var(--sh), var(--inner);
+  animation: qIn .45s cubic-bezier(.22, 1, .36, 1);
+  transition: box-shadow .35s, border-color .35s;
+}
+@keyframes qIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: none; }
+}
+/* ✅ توهّج تركواز خفيف لو الإجابة صح بس */
+.q-card.glow-ok {
+  border-color: rgba(var(--ok-rgb), .6);
+  box-shadow:
+    0 0 0 1px rgba(var(--ok-rgb), .45),
+    0 0 40px rgba(var(--ok-rgb), .22),
+    var(--sh), var(--inner);
+}
+/* ❌ لو غلط: الكارت يفضل محايد — الإجابة بس هي اللي تبقى حمراء */
+.q-card.glow-no {
+  border-color: var(--stroke);
+  box-shadow: var(--sh), var(--inner);
+}
+
+.q-type {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 14px; border-radius: 30px;
+  font-size: .71rem; font-weight: 800;
+  margin-bottom: 15px;
+  border: 1px solid transparent;
+}
+.q-type.single { background: rgba(var(--c1-rgb), .17); color: #9fe4ff; border-color: rgba(var(--c1-rgb), .36); }
+.q-type.tf { background: rgba(var(--c3-rgb), .14); color: var(--c3); border-color: rgba(var(--c3-rgb), .34); }
+html[data-theme="light"] .q-type.single { color: #05597e; }
+
+.q-text { font-size: 1.16rem; font-weight: 700; line-height: 1.95; }
+.q-points { margin-top: 9px; font-size: .74rem; color: var(--muted); font-weight: 700; }
+.q-img {
+  width: 100%; max-height: 290px; object-fit: cover;
+  border-radius: 15px; margin-top: 15px;
+  border: 1px solid var(--stroke);
+}
+
+/* الخيارات */
+.options { display: flex; flex-direction: column; gap: 11px; margin-bottom: 16px; }
+
+.opt {
+  display: flex; align-items: center; gap: 14px;
+  padding: 15px 18px;
+  border-radius: 16px;
+  cursor: pointer;
+  user-select: none;
+  font-size: .97rem; font-weight: 600;
+  color: var(--ink);
+  background: rgba(16, 43, 73, .3);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--inner);
+  transition: .22s;
+  animation: optIn .4s backwards;
+}
+html[data-theme="light"] .opt { background: rgba(255, 255, 255, .74); }
+@keyframes optIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.opt:not(.locked):hover {
+  border-color: rgba(var(--c1-rgb), .62);
+  background: rgba(var(--c1-rgb), .08);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(var(--c1-rgb), .16), var(--inner);
+}
+
+.opt .bullet {
+  width: 26px; height: 26px; flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 207, 255, .3);
+  display: flex; justify-content: center; align-items: center;
+  font-size: .74rem; font-weight: 900;
+  color: var(--muted);
+  transition: .2s;
+}
+html[data-theme="light"] .opt .bullet { border-color: rgba(6, 26, 53, .22); }
+
+.opt .txt { flex: 1; min-width: 0; }
+.opt .mark { font-size: .95rem; opacity: 0; transform: scale(.5); transition: .25s; }
+
+.opt.picked { border-color: rgba(var(--c1-rgb), .8); background: linear-gradient(135deg, rgba(var(--c1-rgb), .2), rgba(var(--c2-rgb), .1)); }
+
+/* ✅ الإجابة الصح */
+.opt.is-ok {
+  border-color: rgba(var(--ok-rgb), .85);
+  background: linear-gradient(135deg, rgba(var(--ok-rgb), .22), rgba(var(--ok-rgb), .06));
+  box-shadow:
+    0 0 0 1px rgba(var(--ok-rgb), .55),
+    0 12px 34px rgba(var(--ok-rgb), .24),
+    var(--inner);
+  animation: popOk .45s cubic-bezier(.22, 1.4, .4, 1);
+}
+.opt.is-ok .bullet {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--ok), var(--c1));
+  color: #022a24;
+  box-shadow: 0 0 18px rgba(var(--ok-rgb), .7);
+}
+.opt.is-ok .mark { opacity: 1; transform: none; color: var(--ok); }
+@keyframes popOk {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* ❌ الإجابة الغلط */
+.opt.is-no {
+  border-color: rgba(var(--bad-rgb), .85);
+  background: linear-gradient(135deg, rgba(var(--bad-rgb), .2), rgba(var(--bad-rgb), .06));
+  box-shadow:
+    0 0 0 1px rgba(var(--bad-rgb), .5),
+    0 12px 34px rgba(var(--bad-rgb), .22),
+    var(--inner);
+  animation: shake .4s;
+}
+.opt.is-no .bullet {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--bad), #db2777);
+  color: #fff;
+  box-shadow: 0 0 18px rgba(var(--bad-rgb), .65);
+}
+.opt.is-no .mark { opacity: 1; transform: none; color: var(--bad); }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.opt.dim { opacity: .4; }
+.opt.locked { cursor: default; }
+
+/* شريط التقييم الفوري */
+.fb {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 15px 18px;
+  border-radius: 16px;
+  font-size: .89rem; font-weight: 700;
+  line-height: 1.9;
+  margin-bottom: 16px;
+  animation: fbIn .35s cubic-bezier(.22, 1, .36, 1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--inner);
+}
+@keyframes fbIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: none; }
+}
+.fb .ico {
+  width: 30px; height: 30px; flex-shrink: 0;
+  border-radius: 10px;
+  display: flex; justify-content: center; align-items: center;
+  font-size: .95rem;
+}
+.fb.ok { background: linear-gradient(135deg, rgba(var(--ok-rgb), .16), rgba(var(--ok-rgb), .05)); border: 1px solid rgba(var(--ok-rgb), .45); color: var(--ok); }
+.fb.ok .ico { background: linear-gradient(135deg, var(--ok), var(--c1)); color: #022a24; }
+.fb.no { background: linear-gradient(135deg, rgba(var(--bad-rgb), .16), rgba(var(--bad-rgb), .05)); border: 1px solid rgba(var(--bad-rgb), .45); color: var(--bad); }
+.fb.no .ico { background: linear-gradient(135deg, var(--bad), #db2777); color: #fff; }
+.fb b { color: var(--ink); }
+.fb .exp { display: block; margin-top: 5px; color: var(--muted); font-weight: 500; font-size: .83rem; }
+
+.locked-note { text-align: center; font-size: .8rem; color: var(--muted); font-weight: 700; margin-bottom: 12px; }
+
+/* ══════════════════════════════════════════════════════════════
+   12) شاشة النتيجة
+   ══════════════════════════════════════════════════════════════ */
+.result-hero { text-align: center; padding: 12px 0 4px; }
+
+.ring-wrap { position: relative; width: 190px; height: 190px; margin: 0 auto 22px; }
+.ring-wrap svg { transform: rotate(-90deg); display: block; }
+.ring-bg { fill: none; stroke: rgba(0, 207, 255, .09); stroke-width: 14; }
+html[data-theme="light"] .ring-bg { stroke: rgba(6, 26, 53, .08); }
+.ring-fg {
+  fill: none;
+  stroke: url(#ringGrad);
+  stroke-width: 14;
+  stroke-linecap: round;
+  stroke-dasharray: 502.65;
+  stroke-dashoffset: 502.65;
+  filter: drop-shadow(0 0 12px rgba(var(--c1-rgb), .55));
+  transition: stroke-dashoffset 1.5s cubic-bezier(.22, 1, .36, 1);
+}
+.ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.ring-center .pct {
+  font-size: 2.4rem; font-weight: 900;
+  background: var(--grad-3);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Outfit', 'Tajawal', sans-serif;
+}
+.ring-center .lbl { font-size: .73rem; color: var(--muted); font-weight: 800; }
+
+.grade-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 6px; line-height: 1.6; }
+.grade-msg { color: var(--muted); font-size: .9rem; line-height: 1.95; max-width: 460px; margin: 0 auto 24px; }
+
+.result-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+.r-stat { padding: 17px 8px; text-align: center; border-radius: 17px; background: rgba(16, 43, 73, .35); border: 1px solid var(--stroke-soft); box-shadow: var(--inner); }
+.r-stat .n { font-size: 1.45rem; font-weight: 900; }
+.r-stat .t { font-size: .71rem; color: var(--muted); margin-top: 4px; font-weight: 800; }
+.r-stat.ok { background: rgba(var(--ok-rgb), .1); border-color: rgba(var(--ok-rgb), .3); }
+.r-stat.ok .n { color: var(--ok); }
+.r-stat.no { background: rgba(var(--bad-rgb), .1); border-color: rgba(var(--bad-rgb), .3); }
+.r-stat.no .n { color: var(--bad); }
+.r-stat.sk { background: rgba(251, 191, 36, .1); border-color: rgba(251, 191, 36, .3); }
+.r-stat.sk .n { color: var(--warn); }
+
+/* ══════════════════════════════════════════════════════════════
+   13) المراجعة
+   ══════════════════════════════════════════════════════════════ */
+.review-head { text-align: center; margin-bottom: 22px; }
+.review-head h2 { font-size: 1.38rem; font-weight: 900; }
+.review-head p { color: var(--muted); font-size: .85rem; margin-top: 6px; line-height: 1.8; }
+
+.rv-item {
+  padding: 19px; margin-bottom: 12px;
+  border-radius: 18px;
+  background: rgba(16, 43, 73, .3);
+  border: 1px solid var(--stroke-soft);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--inner);
+}
+html[data-theme="light"] .rv-item { background: rgba(255, 255, 255, .74); }
+.rv-item.fail { border-color: rgba(var(--bad-rgb), .3); }
+.rv-item.pass { border-color: rgba(var(--ok-rgb), .3); }
+
+.rv-q { font-weight: 700; font-size: .95rem; line-height: 1.9; margin-bottom: 11px; }
+.rv-q .num {
+  display: inline-flex; justify-content: center; align-items: center;
+  min-width: 28px; height: 28px; padding: 0 7px;
+  margin-left: 9px; border-radius: 9px;
+  font-size: .79rem; font-weight: 900;
+  background: rgba(var(--c1-rgb), .18);
+  color: #9fe4ff;
+  border: 1px solid rgba(var(--c1-rgb), .32);
+}
+.rv-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: .84rem; padding: 6px 0; }
+.rv-row .lbl { color: var(--muted); font-weight: 800; }
+.rv-row .val.ok { color: var(--ok); font-weight: 800; }
+.rv-row .val.no { color: var(--bad); font-weight: 800; }
+.rv-badge { font-size: .74rem; font-weight: 900; padding: 4px 14px; border-radius: 30px; }
+.rv-badge.ok { background: rgba(var(--ok-rgb), .15); color: var(--ok); border: 1px solid rgba(var(--ok-rgb), .32); }
+.rv-badge.no { background: rgba(var(--bad-rgb), .15); color: var(--bad); border: 1px solid rgba(var(--bad-rgb), .32); }
+.rv-badge.sk { background: rgba(251, 191, 36, .15); color: var(--warn); border: 1px solid rgba(251, 191, 36, .32); }
+
+/* ══════════════════════════════════════════════════════════════
+   14) بوابة الدخول + لوحة التحكم
+   ══════════════════════════════════════════════════════════════ */
+.teacher-gate { text-align: center; padding: 22px 0; }
+.gate-icon {
+  width: 84px; height: 84px; margin: 0 auto 18px;
+  border-radius: 26px;
+  background: var(--grad-3);
+  display: flex; justify-content: center; align-items: center;
+  font-size: 2.2rem;
+  box-shadow: 0 18px 50px rgba(var(--c1-rgb), .48), var(--inner);
+  animation: gatePulse 3s ease-in-out infinite;
+}
+@keyframes gatePulse { 50% { box-shadow: 0 18px 62px rgba(var(--c3-rgb), .45), var(--inner); } }
+.teacher-gate h2 { font-size: 1.4rem; font-weight: 900; margin-bottom: 8px; }
+.teacher-gate p { color: var(--muted); font-size: .88rem; margin-bottom: 22px; line-height: 1.9; }
+.teacher-err { min-height: 22px; margin-top: 12px; font-size: .85rem; font-weight: 800; color: var(--bad); }
+
+.dash-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+.dash-head h2 { font-size: 1.3rem; font-weight: 900; }
+.dash-head .side { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.t-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 8px; }
+
+/* تابات الأدمن */
+.adm-tabs {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  padding: 7px; margin-bottom: 18px;
+  border-radius: 18px;
+  background: rgba(16, 43, 73, .3);
+  border: 1px solid var(--stroke-soft);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--inner);
+}
+.adm-tab {
+  flex: 1 1 120px;
+  padding: 12px 14px; border-radius: 13px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font-size: .85rem; font-weight: 800;
+  cursor: pointer; transition: .22s;
+}
+.adm-tab:hover { color: var(--c1); background: rgba(var(--c1-rgb), .08); }
+.adm-tab.on {
+  background: var(--grad);
+  color: #021527;
+  box-shadow: 0 10px 26px rgba(var(--c1-rgb), .35), var(--inner);
+}
+
+/* الجداول */
+.tbl-wrap {
+  overflow-x: auto;
+  border-radius: 16px;
+  background: rgba(16, 43, 73, .28);
+  border: 1px solid var(--stroke-soft);
+  padding: 4px 8px;
+  box-shadow: var(--inner);
+}
+html[data-theme="light"] .tbl-wrap { background: rgba(255, 255, 255, .68); }
+.tbl { width: 100%; border-collapse: collapse; font-size: .84rem; }
+.tbl th, .tbl td { padding: 11px 12px; text-align: right; border-bottom: 1px solid var(--line); }
+.tbl th { color: var(--muted); font-size: .73rem; font-weight: 900; white-space: nowrap; }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tbody tr { transition: .18s; }
+.tbl tbody tr:hover { background: rgba(var(--c1-rgb), .1); }
+
+.pct-chip { font-weight: 900; padding: 3px 12px; border-radius: 20px; font-size: .77rem; white-space: nowrap; }
+.pct-chip.high { background: rgba(var(--ok-rgb), .16); color: var(--ok); }
+.pct-chip.mid { background: rgba(251, 191, 36, .16); color: var(--warn); }
+.pct-chip.low { background: rgba(var(--bad-rgb), .16); color: var(--bad); }
+
+/* ══════════════════════════════════════════════════════════════
+   15) محرّر الأسئلة
+   ══════════════════════════════════════════════════════════════ */
+.qm-wrap {
+  margin-top: 20px;
+  padding: 22px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(var(--c2-rgb), .08), rgba(var(--c1-rgb), .05));
+  border: 1px solid rgba(var(--c2-rgb), .28);
+  box-shadow: var(--inner);
+}
+.qm-title { display: flex; align-items: center; gap: 9px; font-size: 1rem; font-weight: 900; margin-bottom: 6px; }
+.qm-title .tag {
+  font-size: .68rem; font-weight: 800;
+  padding: 3px 11px; border-radius: 20px;
+  background: rgba(var(--c1-rgb), .18); color: var(--c1);
+  border: 1px solid rgba(var(--c1-rgb), .32);
+}
+.qm-hint { font-size: .79rem; color: var(--muted); line-height: 1.9; margin-bottom: 16px; }
+
+.ed-tabs { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.ed-tab {
+  padding: 10px 18px; border-radius: 12px;
+  border: 1px solid var(--stroke);
+  background: var(--g1);
+  color: var(--muted);
+  font-size: .83rem; font-weight: 800;
+  cursor: pointer; transition: .2s;
+  box-shadow: var(--inner);
+}
+.ed-tab:hover { color: var(--c1); border-color: rgba(var(--c1-rgb), .5); }
+.ed-tab.on {
+  background: var(--grad);
+  color: #021527; border-color: transparent;
+  box-shadow: 0 10px 26px rgba(var(--c1-rgb), .35), var(--inner);
+}
+
+.ed-opt { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
+.ed-mark {
+  width: 34px; height: 34px; flex-shrink: 0;
+  border-radius: 11px;
+  border: 1px solid var(--stroke);
+  background: rgba(16, 43, 73, .35);
+  color: var(--muted);
+  font-size: .85rem; font-weight: 900;
+  cursor: pointer; transition: .2s;
+  display: flex; justify-content: center; align-items: center;
+}
+.ed-mark:hover { border-color: rgba(var(--ok-rgb), .6); color: var(--ok); }
+.ed-mark.on {
+  background: linear-gradient(135deg, rgba(var(--ok-rgb), .9), rgba(var(--c1-rgb), .9));
+  color: #022a24; border-color: transparent;
+  box-shadow: 0 0 18px rgba(var(--ok-rgb), .5);
+}
+.ed-opt input {
+  flex: 1; padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--stroke);
+  background: rgba(16, 43, 73, .35);
+  font-family: inherit; font-size: .9rem; color: var(--ink);
+  outline: none; transition: .2s;
+  box-shadow: var(--inner);
+}
+html[data-theme="light"] .ed-opt input { background: rgba(255, 255, 255, .82); }
+.ed-opt input:focus { border-color: rgba(var(--c1-rgb), .72); box-shadow: 0 0 0 3px rgba(var(--c1-rgb), .12), var(--inner); }
+.ed-del {
+  width: 32px; height: 32px; flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid rgba(var(--bad-rgb), .32);
+  background: rgba(var(--bad-rgb), .1);
+  color: var(--bad); font-size: .9rem;
+  cursor: pointer; transition: .2s;
+}
+.ed-del:hover { background: rgba(var(--bad-rgb), .26); }
+
+.drop-zone {
+  display: block; padding: 22px; text-align: center;
+  border-radius: 16px;
+  border: 1.6px dashed rgba(var(--c1-rgb), .45);
+  background: rgba(var(--c1-rgb), .05);
+  cursor: pointer; transition: .22s;
+}
+.drop-zone:hover { border-color: rgba(var(--c1-rgb), .88); background: rgba(var(--c1-rgb), .1); transform: translateY(-2px); }
+.drop-zone .dz-icon { font-size: 1.7rem; margin-bottom: 8px; }
+.drop-zone .dz-txt { font-size: .86rem; font-weight: 800; }
+.drop-zone .dz-sub { font-size: .74rem; color: var(--muted); margin-top: 5px; }
+.drop-zone input[type="file"] { display: none; }
+
+details.format-help {
+  margin-top: 14px;
+  border-radius: 14px;
+  border: 1px solid var(--stroke-soft);
+  background: rgba(16, 43, 73, .18);
+  padding: 12px 16px;
+  font-size: .8rem; line-height: 1.95;
+}
+details.format-help summary { cursor: pointer; font-weight: 900; color: var(--c1); font-size: .83rem; outline: none; }
+details.format-help code {
+  display: block; margin: 8px 0; padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(2, 13, 34, .65);
+  color: #7ee7ff;
+  font-family: 'Courier New', monospace;
+  font-size: .75rem;
+  direction: ltr; text-align: left;
+  white-space: pre-wrap; word-break: break-word;
+  border: 1px solid var(--stroke-soft);
+}
+html[data-theme="light"] details.format-help code { background: rgba(2, 30, 60, .92); }
+
+/* قائمة الأسئلة */
+.qm-list { display: flex; flex-direction: column; gap: 9px; margin-top: 14px; max-height: 620px; overflow-y: auto; padding-left: 4px; }
+.qm-item {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 12px; padding: 13px 15px;
+  border-radius: 14px;
+  background: rgba(16, 43, 73, .3);
+  border: 1px solid var(--stroke-soft);
+  transition: .2s;
+  box-shadow: var(--inner);
+}
+html[data-theme="light"] .qm-item { background: rgba(255, 255, 255, .74); }
+.qm-item:hover { border-color: rgba(var(--c1-rgb), .42); }
+.qm-item .qi-body { flex: 1; min-width: 0; }
+.qm-item .qi-q { font-size: .88rem; font-weight: 800; line-height: 1.8; word-break: break-word; }
+.qm-item .qi-meta { margin-top: 5px; font-size: .74rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.qi-tag {
+  font-size: .66rem; font-weight: 900;
+  padding: 2px 9px; border-radius: 20px;
+  background: rgba(var(--c1-rgb), .17); color: #9fe4ff;
+  border: 1px solid rgba(var(--c1-rgb), .3);
+}
+html[data-theme="light"] .qi-tag { color: #05597e; }
+.qi-tag.imp { background: rgba(var(--c3-rgb), .14); color: var(--c3); border-color: rgba(var(--c3-rgb), .3); }
+.qi-tag.base { background: rgba(var(--c2-rgb), .14); color: var(--c2); border-color: rgba(var(--c2-rgb), .3); }
+.qi-ok { color: var(--ok); font-weight: 800; }
+.qi-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.qi-btn {
+  width: 32px; height: 32px; border-radius: 10px;
+  border: 1px solid var(--stroke);
+  background: rgba(16, 43, 73, .35);
+  color: var(--muted); cursor: pointer; font-size: .9rem;
+  transition: .2s;
+}
+.qi-btn:hover { color: var(--c1); border-color: rgba(var(--c1-rgb), .55); }
+.qi-btn.del { border-color: rgba(var(--bad-rgb), .3); background: rgba(var(--bad-rgb), .1); color: var(--bad); }
+.qi-btn.del:hover { background: rgba(var(--bad-rgb), .26); transform: scale(1.06); }
+
+/* ══════════════════════════════════════════════════════════════
+   16) المودال الزجاجي
+   ══════════════════════════════════════════════════════════════ */
+.modal-host {
+  position: fixed; inset: 0; z-index: 900;
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 18px;
+  background: rgba(1, 6, 16, .72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.modal-host.open { display: flex; animation: fadeIn .25s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-box {
+  width: 100%; max-width: 440px;
+  border-radius: 22px;
+  background: linear-gradient(160deg, rgba(16, 43, 73, .96), rgba(2, 13, 34, .98));
+  border: 1px solid var(--stroke);
+  box-shadow: 0 40px 100px rgba(0, 8, 22, .8), var(--inner);
+  animation: modalIn .3s cubic-bezier(.22, 1, .36, 1);
+  overflow: hidden;
+}
+html[data-theme="light"] .modal-box { background: #fff; }
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(22px) scale(.96); }
+  to   { opacity: 1; transform: none; }
+}
+.modal-head {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 10px; padding: 18px 20px;
+  border-bottom: 1px solid var(--stroke-soft);
+}
+.modal-head h3 { font-size: 1.02rem; font-weight: 900; }
+.modal-x {
+  width: 34px; height: 34px; border-radius: 11px;
+  border: 1px solid var(--stroke);
+  background: rgba(16, 43, 73, .35);
+  color: var(--muted); cursor: pointer; font-size: .9rem;
+  transition: .2s;
+}
+.modal-x:hover { color: var(--bad); border-color: rgba(var(--bad-rgb), .5); }
+.modal-body { padding: 20px; font-size: .89rem; line-height: 2; color: var(--muted); }
+.modal-body b { color: var(--ink); }
+.modal-foot { display: flex; gap: 10px; padding: 0 20px 20px; }
+.modal-foot .btn { flex: 1; padding: 13px 16px; font-size: .89rem; }
+
+/* ══════════════════════════════════════════════════════════════
+   17) التوست والكونفيتي
+   ══════════════════════════════════════════════════════════════ */
+.toast {
+  position: fixed; bottom: 26px; left: 50%; z-index: 999;
+  padding: 13px 26px; border-radius: 40px;
+  font-size: .86rem; font-weight: 800; text-align: center;
+  max-width: 92%;
+  color: var(--ink);
+  background: var(--g2);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(24px) saturate(165%);
+  -webkit-backdrop-filter: blur(24px) saturate(165%);
+  box-shadow: var(--sh-lg), var(--inner);
+  transform: translateX(-50%) translateY(130px);
+  opacity: 0;
+  transition: .45s cubic-bezier(.22, 1, .36, 1);
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+.confetti {
+  position: fixed; top: -22px; z-index: 998;
+  width: 9px; height: 15px; border-radius: 3px;
+  pointer-events: none;
+  animation: confFall linear forwards;
+}
+@keyframes confFall { to { transform: translateY(114vh) rotate(680deg); opacity: .12; } }
+
+/* ══════════════════════════════════════════════════════════════
+   18) الطباعة
+   ══════════════════════════════════════════════════════════════ */
+@media print {
+  html[data-theme="dark"] {
+    --bg: #fff; --ink: #111; --muted: #555; --line: #ccc;
+    --g1: #fff; --g2: #fff; --stroke: #ccc;
+  }
+  body { background: #fff !important; padding: 0 !important; color: #111 !important; }
+  .bg-layer, .grid-overlay, .theme-fab, .toast, .confetti, .modal-host,
+  .site-head .dev-chip, .btn, .btn-row, .icon-btn, .quiz-head,
+  .quiz-meta, .progress-track, .qm-wrap, .drop-zone,
+  details.format-help, .resume-box, .ed-tabs, .adm-tabs { display: none !important; }
+  .screen { display: none !important; }
+  .screen.active { display: block !important; }
+  .card, .q-card, .rv-item, .panel {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    background: #fff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-radius: 10px !important;
+  }
+  .cover { background: #f3f3f3 !important; color: #111 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cover h1, .cover .sub, .cover .dev-tag { color: #111 !important; -webkit-text-fill-color: #111 !important; }
+  .history-item, .rv-item, .tbl tr, .qm-item { break-inside: avoid; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   19) الموبايل
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 620px) {
+  body { padding: 14px 10px 48px; }
+  .card-body { padding: 18px 15px; }
+  .cover { padding: 26px 20px; }
+  .cover h1 { font-size: 1.5rem; }
+  .cover .sub { font-size: .86rem; }
+  .row-2, .row-3 { grid-template-columns: 1fr; }
+  .stats-grid, .result-stats, .t-stats { gap: 8px; }
+  .q-card { padding: 20px 16px; }
+  .q-text { font-size: 1.04rem; }
+  .opt { padding: 13px 14px; font-size: .91rem; }
+  .btn-row { flex-direction: column; }
+  .btn-row .btn { flex: 1 1 auto; }
+  .theme-fab { top: 12px; left: 12px; width: 42px; height: 42px; }
+  .dev-chip { font-size: .72rem; padding: 7px 12px; }
+  .qm-wrap { padding: 16px 14px; }
+  .dash-head h2 { font-size: 1.1rem; }
+  .ring-wrap { width: 165px; height: 165px; }
+  .ring-wrap svg { width: 165px; height: 165px; }
+  .ring-center .pct { font-size: 2rem; }
+  .adm-tab { flex: 1 1 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-layer" aria-hidden="true">
+  <span class="orb o1"></span>
+  <span class="orb o2"></span>
+  <span class="orb o3"></span>
+</div>
+<div class="grid-overlay" aria-hidden="true"></div>
+
+<button class="theme-fab" id="themeFab" onclick="toggleTheme()" title="تبديل الوضع الليلي/النهاري" aria-label="تبديل الثيم">🌙</button>
+
+<div class="app">
+
+  <header class="site-head">
+    <div class="head-brand">
+      <span class="mark">📋</span>
+      <span>VAN  TEX</span>
+    </div>
+    <div class="dev-chip">
+      <span class="dot"></span>
+      <span>𝑬𝒏𝒈 | 𝒏𝒂𝒅𝒆𝒓 𝒌𝒂𝒔𝒔𝒆𝒎</span>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ═══════════════ 🏠 شاشة البداية ═══════════════ -->
+    <section id="homeScreen" class="screen active">
+      <div class="card">
+
+        <div class="cover">
+          <div class="cover-inner">
+            <div class="cover-top">
+              <div class="cover-brand">
+                <span class="box">📋</span>
+                <span>VAN  TEX</span>
+              </div>
+              <span class="pill-soft">✦ اختبار رسمي</span>
+            </div>
+
+            <h1 id="quizTitle">اختبار المعهد</h1>
+            <div class="sub" id="quizDesc">
+              اختبار تفاعلي بتقييم فوري — كل سؤال يُقفل بعد الإجابة، ولا تنتقل للتالي إلا بعد الحل.
+            </div>
+
+            <div class="dev-tag">
+              <span>✦</span>
+              <span>نسأل الله لكم التوفيق والسداد، وأن يرزقكم العلم النافع والنجاح والتفوق : 𝑬𝒏𝒈 | 𝒏𝒂𝒅𝒆𝒓 𝒌𝒂𝒔𝒔𝒆𝒎</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+
+          <div id="resumeBox" class="resume-box hidden">
+            <span>🔄 عندك جلسة اختبار غير مكتملة</span>
+            <button class="icon-btn on" onclick="resumeExam()">استكمال الاختبار ←</button>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat"><div class="num" id="stCount">0</div><div class="lbl">سؤال متاح</div></div>
+            <div class="stat"><div class="num" id="stTime">—</div><div class="lbl">مدة الاختبار</div></div>
+            <div class="stat"><div class="num" id="stTypes">0</div><div class="lbl">أنواع الأسئلة</div></div>
+          </div>
+
+          <div id="bankNote"></div>
+
+          <div class="field">
+            <label>👤 اسمك </label>
+            <input id="inName" type="text" maxlength="34" placeholder="the name" autocomplete="name" />
+          </div>
+
+          <div class="field">
+            <label>⚙️ إعدادات الاختبار</label>
+            <div class="row-3">
+              <div class="sel" data-name="time"></div>
+              <div class="sel" data-name="order"></div>
+              <div class="sel" data-name="count"></div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="startExam()"> ابدأ  الآن</button>
+
+          <div class="sec-title">📊 محاولاتك السابقة</div>
+          <div class="history-list" id="historyList"></div>
+
+          <div class="btn-row" style="margin-top:20px;">
+            <button class="btn btn-ghost" onclick="openTeacher()">⚠️ My developer </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 📝 شاشة الاختبار ═══════════════ -->
+    <section id="quizScreen" class="screen">
+
+      <div class="quiz-head">
+        <button class="icon-btn danger" onclick="quitExam()">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+          خروج
+        </button>
+
+        <div class="side">
+          <button class="icon-btn on" id="soundBtn" onclick="toggleSound()">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+              <path d="M15.5 8.5a5 5 0 010 7"/>
+              <path d="M18.5 5.5a9 9 0 010 13"/>
+            </svg>
+            الصوت
+          </button>
+        </div>
+      </div>
+
+      <div class="quiz-meta">
+        <span class="pill questions" id="qCounter">السؤال 1 من 10</span>
+        <span class="pill score" id="liveScore">✅ 0</span>
+        <span class="pill timer" id="timerPill">⏱ 05:00</span>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <div class="q-card" id="qCard">
+        <span class="q-type single" id="qType">اختيار من متعدد</span>
+        <div class="q-text" id="qText">السؤال هنا...</div>
+        <img class="q-img" id="qImg" style="display:none;" alt="صورة السؤال" />
+        <div class="q-points" id="qPoints">1 نقطة</div>
+      </div>
+
+      <div class="options" id="optionsBox"></div>
+
+      <div id="fbBox"></div>
+
+      <div class="locked-note" id="lockNote">اختر إجابة واحدة للمتابعة — لا يمكن الرجوع لسؤال سابق</div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btnNext" onclick="goNext()" disabled>اختر إجابة للمتابعة</button>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 🎉 شاشة النتيجة ═══════════════ -->
+    <section id="resultScreen" class="screen">
+      <div class="card">
+        <div class="card-body">
+
+          <div class="result-hero">
+            <div class="ring-wrap">
+              <svg width="190" height="190" viewBox="0 0 180 180">
+                <defs>
+                  <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#00CFFF"/>
+                    <stop offset="55%" stop-color="#008CFF"/>
+                    <stop offset="100%" stop-color="#00E5C3"/>
+                  </linearGradient>
+                </defs>
+                <circle class="ring-bg" cx="90" cy="90" r="80"/>
+                <circle class="ring-fg" id="ringFg" cx="90" cy="90" r="80"/>
+              </svg>
+              <div class="ring-center">
+                <div class="pct" id="resultPct">0%</div>
+                <div class="lbl">نسبة النجاح</div>
+              </div>
+            </div>
+
+            <div class="grade-title" id="gradeTitle">—</div>
+            <div class="grade-msg" id="gradeMsg">—</div>
+
+            <div class="result-stats">
+              <div class="r-stat ok"><div class="n" id="stCorrect">0</div><div class="t">إجابات صحيحة</div></div>
+              <div class="r-stat no"><div class="n" id="stWrong">0</div><div class="t">إجابات خاطئة</div></div>
+              <div class="r-stat sk"><div class="n" id="stBlank">0</div><div class="t">بدون إجابة</div></div>
+            </div>
+
+            <div class="btn-row" style="margin-bottom:12px;">
+              <button class="btn btn-primary" onclick="startExam()">🔄 إعادة الاختبار</button>
+              <button class="btn btn-ghost" onclick="showReview()">📋 مراجعة الإجابات</button>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn btn-ghost" onclick="copyResult()">📤 مشاركة النتيجة</button>
+              <button class="btn btn-ghost" onclick="window.print()">🖨️ طباعة / PDF</button>
+            </div>
+
+            <div class="btn-row" style="margin-top:12px;">
+              <button class="btn btn-ghost" onclick="goHome()">🏠 الرئيسية</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 📋 شاشة المراجعة ═══════════════ -->
+    <section id="reviewScreen" class="screen">
+      <div class="card">
+        <div class="card-body">
+          <div class="review-head">
+            <h2>📋 مراجعة الإجابات</h2>
+            <p id="reviewSummary">...</p>
+          </div>
+          <div id="reviewList"></div>
+          <div class="btn-row" style="margin-top:16px;">
+            <button class="btn btn-primary" onclick="showResult()">📊 العودة للنتيجة</button>
+            <button class="btn btn-ghost" onclick="goHome()">🏠 الرئيسية</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ ⚙️ شاشة لوحة التحكم ═══════════════ -->
+    <section id="teacherScreen" class="screen">
+      <div class="card">
+        <div class="card-body" id="teacherCard"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-foot">
+    <span class="foot-line">
+       Design and development <b>𝑬𝒏𝒈 | 𝒏𝒂𝒅𝒆𝒓 𝒌𝒂𝒔𝒔𝒆𝒎</b> · VAN  TEX © 2026
+    </span>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="modal-host" id="modalHost" onclick="if(event.target===this)modalClose()">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   🔑 1) الإعدادات العامة
+   ══════════════════════════════════════════════════════════════ */
+const DEV_NAME = '𝑬𝒏𝒈 | 𝒏𝒂𝒅𝒆𝒓 𝒌𝒂𝒔𝒔𝒆𝒎';
+const DEFAULT_PASS = 'admin123';
+
+const K = {
+  theme:      'taqyeem.v5.theme',
+  progress:   'taqyeem.v5.progress',
+  history:    'taqyeem.v5.history',
+  logins:     'taqyeem.v5.logins',
+  custom:     'taqyeem.v5.custom',
+  lastName:   'taqyeem.v5.lastName',
+  baseOff:    'taqyeem.v5.baseOff',
+  baseHidden: 'taqyeem.v5.baseHidden',
+  meta:       'taqyeem.v5.meta',
+  pass:       'taqyeem.v5.pass'
+};
+
+/* ══════════════════════════════════════════════════════════════
+   📚 2) بنك الأسئلة الأساسي (اختياري)
+   ──────────────────────────────────────────────────────────────
+   تقدر تسيبه فاضي وتعتمد على لوحة التحكم بالكامل.
+   أو تلصق أسئلتك هنا بنفس الصيغة:
+
+   { q:'السؤال؟', options:['أ','ب','ج','د'], correct: 2 }
+   { q:'السؤال؟', options:['أ','*ب','ج'] }        ← نجمة = الصح
+   { q:'جملة؟', type:'tf', correct: true }
+   ══════════════════════════════════════════════════════════════ */
+const QUESTIONS = [
+
+];
+
+/* أسئلة تجريبية — تتحمّل من زر في لوحة التحكم لو حبيت */
+const DEMO_QUESTIONS = [
+  { q: 'ما عاصمة مصر؟', options: ['الإسكندرية', 'القاهرة', 'الجيزة', 'أسوان'], correct: 2, explain: 'القاهرة هي العاصمة الرسمية لمصر.' },
+  { q: 'كم عدد أيام الأسبوع؟', options: ['5', '6', '7', '8'], correct: 3 },
+  { q: 'الماء يغلي عند 100 درجة مئوية عند سطح البحر.', type: 'tf', correct: true },
+  { q: 'مصر تقع في قارة آسيا.', type: 'tf', correct: false, explain: 'مصر تقع في قارة أفريقيا.' },
+  { q: 'أي من هذه الدول تقع في قارة أفريقيا؟', options: ['فرنسا', '*نيجيريا', 'اليابان', 'كندا'], explain: 'نيجيريا دولة أفريقية.' }
+];
+
+/* ══════════════════════════════════════════════════════════════
+   ⚙️ 3) الحالة
+   ══════════════════════════════════════════════════════════════ */
+const EX = {
+  qs: [], i: 0, ans: [], name: '',
+  secondsLeft: 0, timer: null, timed: false,
+  finished: false, result: null
+};
+
+const SEL = { time: 5, order: 'seq', count: 0 };
+
+const SELECTS = {
+  time: [
+    { v: 2, l: '⏱ دقيقتان' },
+    { v: 5, l: '⏱ 5 دقائق' },
+    { v: 10, l: '⏱ 10 دقائق' },
+    { v: 15, l: '⏱ 15 دقيقة' },
+    { v: 30, l: '⏱ 30 دقيقة' },
+    { v: 0, l: '∞ بدون مؤقت' }
+  ],
+  order: [
+    { v: 'seq', l: '🔢 بالترتيب' },
+    { v: 'rand', l: '🔀 عشوائي' }
+  ],
+  count: [
+    { v: 0, l: '📚 كل الأسئلة' },
+    { v: 10, l: '10 أسئلة' },
+    { v: 20, l: '20 سؤالًا' },
+    { v: 30, l: '30 سؤالًا' },
+    { v: 50, l: '50 سؤالًا' }
+  ]
+};
+
+let audioCtx = null;
+let soundOn = true;
+
+/* حالة لوحة التحكم */
+const ADM = { tab: 'dash', auth: false };
+let ED = { type: 'single', opts: ['', '', '', ''], correct: 0, tf: true, editId: null, q: '', exp: '' };
+let QFILTER = '';
+
+/* ══════════════════════════════════════════════════════════════
+   🛠️ 4) أدوات مساعدة
+   ══════════════════════════════════════════════════════════════ */
+function $(id) { return document.getElementById(id); }
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function uid() {
+  return 'q' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function toast(msg) {
+  const t = $('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function readJSON(key, fb) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fb;
+    const v = JSON.parse(raw);
+    return v == null ? fb : v;
+  } catch (e) { return fb; }
+}
+
+function writeJSON(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+}
+
+function normAr(v) {
+  return String(v == null ? '' : v)
+    .toLowerCase()
+    .replace(/[\u064B-\u065F\u0670\u0640]/g, '')
+    .replace(/[إأآٱ]/g, 'ا')
+    .replace(/ى/g, 'ي')
+    .replace(/ؤ/g, 'و')
+    .replace(/ئ/g, 'ي')
+    .replace(/ة/g, 'ه')
+    .replace(/[^\p{L}\p{N}\s]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function todayStamp() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function download(filename, content, mime) {
+  try {
+    const blob = new Blob([content], { type: mime || 'text/plain;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+  } catch (e) {
+    toast('مش قادر أنزّل الملف');
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🧩 5) توحيد صيغة السؤال
+   ══════════════════════════════════════════════════════════════ */
+function normalizeQ(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+
+  const type = raw.type === 'tf' ? 'tf' : 'single';
+  const text = String(raw.q || raw.question || raw.text || '').trim();
+  if (!text) return null;
+
+  const explain = raw.explain ? String(raw.explain).trim() : '';
+  const image = raw.image ? String(raw.image).trim() : '';
+  const id = raw.id || uid();
+
+  if (type === 'tf') {
+    let c = raw.correct;
+    if (typeof c === 'string') c = /^(true|صح|ص|1|نعم|yes|t)$/i.test(c.trim());
+    return { id: id, type: 'tf', q: text, correct: !!c, explain: explain, image: image };
+  }
+
+  let opts = Array.isArray(raw.options) ? raw.options.map(function (o) { return String(o); }) : [];
+  let starIdx = -1;
+
+  opts = opts.map(function (o, i) {
+    if (/^\s*\*/.test(o)) {
+      if (starIdx < 0) starIdx = i;
+      return o.replace(/^\s*\*/, '').trim();
+    }
+    return o.trim();
+  });
+
+  if (opts.length < 2 || opts.some(function (o) { return !o; })) return null;
+
+  let correct = starIdx;
+
+  if (correct < 0) {
+    const c = (raw.correct !== undefined && raw.correct !== null) ? raw.correct : raw.answer;
+    if (typeof c === 'number') correct = c - 1;
+    else if (typeof c === 'string') {
+      const t = c.trim();
+      if (/^\d+$/.test(t)) correct = +t - 1;
+      else correct = opts.findIndex(function (o) { return normAr(o) === normAr(t); });
+    }
+  }
+
+  if (!(correct >= 0 && correct < opts.length)) return null;
+
+  return { id: id, type: 'single', q: text, options: opts, correct: correct, explain: explain, image: image };
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🗂️ 6) بنك الأسئلة
+   ══════════════════════════════════════════════════════════════ */
+function baseOff() { return readJSON(K.baseOff, false) === true; }
+function getHidden() {
+  const h = readJSON(K.baseHidden, []);
+  return Array.isArray(h) ? h : [];
+}
+
+function baseAll() {
+  return QUESTIONS.map(function (r, i) {
+    const q = normalizeQ(r);
+    if (!q) return null;
+    q.id = 'b' + (i + 1);
+    return q;
+  }).filter(Boolean);
+}
+
+function baseBank() {
+  if (baseOff()) return [];
+  const hidden = getHidden();
+  return baseAll().filter(function (q) { return hidden.indexOf(q.id) < 0; });
+}
+
+function getCustom() {
+  const arr = readJSON(K.custom, []);
+  if (!Array.isArray(arr)) return [];
+  return arr.map(normalizeQ).filter(Boolean);
+}
+
+function saveCustom(arr) { writeJSON(K.custom, arr); }
+
+function allQ() { return baseBank().concat(getCustom()); }
+
+function findQ(id) {
+  const all = baseAll().concat(getCustom());
+  for (let i = 0; i < all.length; i++) if (all[i].id === id) return all[i];
+  return null;
+}
+
+function typeLabel(t) { return t === 'tf' ? 'صح / خطأ' : 'اختيار من متعدد'; }
+function typeShort(t) { return t === 'tf' ? 'صح/خطأ' : 'اختيار'; }
+
+function optList(q) {
+  if (q.type === 'tf') return [{ t: 'صح ✅', v: 'true' }, { t: 'خطأ ❌', v: 'false' }];
+  return q.options.map(function (t, i) { return { t: t, v: String(i) }; });
+}
+
+function isCorrect(q, v) {
+  if (q.type === 'tf') return (v === 'true') === !!q.correct;
+  return +v === +q.correct;
+}
+
+function correctLabel(q) {
+  if (q.type === 'tf') return q.correct ? 'صح ✅' : 'خطأ ❌';
+  return q.options[q.correct] != null ? String(q.options[q.correct]) : '—';
+}
+
+function quizMeta() {
+  const m = readJSON(K.meta, null) || {};
+  return {
+    title: m.title || 'اختبار المعهد',
+    description: m.description || 'اختبار تفاعلي بتقييم فوري — كل سؤال يُقفل بعد الإجابة، ولا تنتقل للتالي إلا بعد الحل.'
+  };
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🔊 7) الصوت
+   ══════════════════════════════════════════════════════════════ */
+function beep(freq, dur, type) {
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator();
+    
+    const g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    o.type = type || 'sine';
+    o.frequency.value = freq || 700;
+    g.gain.setValueAtTime(.11, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001, audioCtx.currentTime + (dur || .18));
+    o.start();
+    o.stop(audioCtx.currentTime + (dur || .18));
+  } catch (e) {}
+}
+
+const sndOk     = function () { beep(760, .1); setTimeout(function () { beep(1100, .14); }, 90); };
+const sndNo     = function () { beep(220, .18, 'square'); setTimeout(function () { beep(160, .22, 'square'); }, 120); };
+const sndPick   = function () { beep(520, .07); };
+const sndFinish = function () { beep(660, .16); setTimeout(function () { beep(880, .16); }, 150); setTimeout(function () { beep(1180, .26); }, 310); };
+
+function toggleSound() {
+  soundOn = !soundOn;
+  const b = $('soundBtn');
+  if (b) b.classList.toggle('on', soundOn);
+  toast(soundOn ? '🔊 تم تشغيل الصوت' : '🔇 تم إيقاف الصوت');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🎉 8) الكونفيتي
+   ══════════════════════════════════════════════════════════════ */
+function launchConfetti() {
+  const colors = ['#00CFFF', '#008CFF', '#00E5C3', '#7ee7ff', '#fbbf24'];
+  for (let i = 0; i < 80; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDuration = (2.6 + Math.random() * 2.4) + 's';
+    p.style.animationDelay = (Math.random() * 1.2) + 's';
+    document.body.appendChild(p);
+    setTimeout(function () { p.remove(); }, 6800);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🌗 9) الثيم
+   ══════════════════════════════════════════════════════════════ */
+function isDark() { return document.documentElement.getAttribute('data-theme') !== 'light'; }
+
+function applyThemeIcon() {
+  const b = $('themeFab');
+  if (b) b.textContent = isDark() ? '🌙' : '☀️';
+}
+
+function toggleTheme() {
+  const nowDark = isDark();
+  if (nowDark) document.documentElement.setAttribute('data-theme', 'light');
+  else document.documentElement.removeAttribute('data-theme');
+  try { localStorage.setItem(K.theme, nowDark ? 'light' : 'dark'); } catch (e) {}
+  applyThemeIcon();
+  toast(nowDark ? '☀️ الوضع النهاري' : '🌙 الوضع الليلي');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🎛️ 10) القوائم الزجاجية
+   ══════════════════════════════════════════════════════════════ */
+function initSelects() {
+  document.querySelectorAll('.sel[data-name]').forEach(function (host) {
+    const name = host.dataset.name;
+    const list = SELECTS[name];
+    if (!list) return;
+
+    host.innerHTML =
+      '<button type="button" class="sel-btn"><span></span><i class="chev"></i></button>' +
+      '<div class="sel-menu">' +
+        list.map(function (o) {
+          return '<button type="button" class="sel-opt" data-v="' + o.v + '">' + esc(o.l) + '</button>';
+        }).join('') +
+      '</div>';
+
+    const btn = host.querySelector('.sel-btn');
+    const valEl = host.querySelector('.sel-btn span');
+
+    const sync = function () {
+      const cur = list.find(function (o) { return String(o.v) === String(SEL[name]); }) || list[0];
+      valEl.textContent = cur.l;
+      host.querySelectorAll('.sel-opt').forEach(function (b) {
+        b.classList.toggle('on', String(b.dataset.v) === String(SEL[name]));
+      });
+    };
+
+    btn.onclick = function (e) {
+      e.stopPropagation();
+      const wasOpen = host.classList.contains('open');
+      document.querySelectorAll('.sel.open').forEach(function (s) { s.classList.remove('open'); });
+      host.classList.toggle('open', !wasOpen);
+    };
+
+    host.querySelectorAll('.sel-opt').forEach(function (b) {
+      b.onclick = function (e) {
+        e.stopPropagation();
+        SEL[name] = (name === 'order') ? b.dataset.v : +b.dataset.v;
+        sync();
+        host.classList.remove('open');
+        renderHome();
+      };
+    });
+
+    sync();
+  });
+
+  document.addEventListener('click', function () {
+    document.querySelectorAll('.sel.open').forEach(function (s) { s.classList.remove('open'); });
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🧭 11) الشاشات
+   ══════════════════════════════════════════════════════════════ */
+function show(id) {
+  document.querySelectorAll('.screen').forEach(function (s) { s.classList.remove('active'); });
+  const el = $(id);
+  if (el) el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goHome() {
+  stopTimer();
+  renderHome();
+  show('homeScreen');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🏠 12) الرئيسية
+   ══════════════════════════════════════════════════════════════ */
+function renderHome() {
+  const bank = allQ();
+  const meta = quizMeta();
+
+  if ($('quizTitle')) $('quizTitle').textContent = meta.title;
+  if ($('quizDesc')) $('quizDesc').textContent = meta.description;
+  if ($('stCount')) $('stCount').textContent = bank.length;
+  if ($('stTypes')) $('stTypes').textContent = new Set(bank.map(function (q) { return q.type; })).size;
+  if ($('stTime')) $('stTime').textContent = SEL.time > 0 ? SEL.time + ' د' : '∞';
+
+  /* تنبيه لو البنك فاضي */
+  const note = $('bankNote');
+  if (note) {
+    if (!bank.length) {
+      note.innerHTML = '<div class="empty-note" style="margin-bottom:18px">' +
+        '🗃️ بنك الأسئلة فاضي حاليًا — ادخل <b>لوحة التحكم (المطور)</b> وأضف أسئلتك.' +
+      '</div>';
+    } else note.innerHTML = '';
+  }
+
+  renderHistory();
+  updateResumeBox();
+}
+
+function renderHistory() {
+  const hist = readJSON(K.history, []);
+  const list = $('historyList');
+  if (!list) return;
+
+  if (!Array.isArray(hist) || !hist.length) {
+    list.innerHTML = '<div class="empty-note">لسه مفيش محاولات — أول نتيجة هتظهر هنا 📊</div>';
+    return;
+  }
+
+  list.innerHTML = '';
+  hist.slice().reverse().slice(0, 5).forEach(function (h) {
+    const cls = h.pct >= 60 ? 'high' : h.pct >= 40 ? 'mid' : 'low';
+    const div = document.createElement('div');
+    div.className = 'history-item';
+    div.innerHTML =
+      '<div>' +
+        '<div class="h-name">' + esc(h.name) + '</div>' +
+        '<div class="h-date">' + esc(h.date) + ' · ' + esc(h.correct) + '/' + esc(h.total) + ' صحيحة</div>' +
+      '</div>' +
+      '<span class="history-score ' + cls + '">' + esc(h.pct) + '%</span>';
+    list.appendChild(div);
+  });
+}
+
+function pushHistory(entry) {
+  const hist = readJSON(K.history, []);
+  if (!Array.isArray(hist)) { writeJSON(K.history, [entry]); return; }
+  hist.push(entry);
+  writeJSON(K.history, hist);
+}
+
+function getLogins() {
+  const l = readJSON(K.logins, []);
+  return Array.isArray(l) ? l : [];
+}
+
+function pushLogin(name) {
+  const list = getLogins();
+  const now = new Date();
+  list.push({
+    name: name,
+    time: now.toLocaleDateString('ar-EG', { day: 'numeric', month: 'short' }) +
+          ' — ' + now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
+  });
+  if (list.length > 300) list.splice(0, list.length - 300);
+  writeJSON(K.logins, list);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🚀 13) بدء الاختبار
+   ══════════════════════════════════════════════════════════════ */
+function startExam() {
+  const nameInput = $('inName');
+  const name = nameInput ? nameInput.value.trim() : '';
+
+  if (!name) {
+    toast('اكتب اسمك الأول قبل ما تبدأ 😅');
+    if (nameInput) nameInput.focus();
+    return;
+  }
+
+  const bank = allQ();
+  if (!bank.length) {
+    toast('بنك الأسئلة فاضي — أضف أسئلة من لوحة التحكم');
+    return;
+  }
+
+  EX.name = name;
+  EX.ans = [];
+  EX.i = 0;
+  EX.finished = false;
+  EX.result = null;
+
+  try { localStorage.setItem(K.lastName, name); } catch (e) {}
+  pushLogin(name);
+
+  let picked = SEL.order === 'rand' ? shuffle(bank) : bank.slice();
+  if (SEL.count > 0) picked = picked.slice(0, Math.min(SEL.count, picked.length));
+
+  EX.qs = picked;
+  EX.timed = SEL.time > 0;
+  EX.secondsLeft = SEL.time * 60;
+
+  stopTimer();
+  const pill = $('timerPill');
+
+  if (EX.timed) {
+    if (pill) pill.classList.remove('warn');
+    updateTimerPill();
+    EX.timer = setInterval(tick, 1000);
+  } else if (pill) {
+    pill.textContent = '⏱ بدون مؤقت';
+    pill.classList.remove('warn');
+  }
+
+  saveProgress();
+  renderQuestion();
+  show('quizScreen');
+}
+
+function tick() {
+  if (EX.secondsLeft <= 0) {
+    stopTimer();
+    toast('⏰ انتهى الوقت! تم تسليم الاختبار تلقائيًا');
+    finishExam(true);
+    return;
+  }
+  EX.secondsLeft--;
+  updateTimerPill();
+  saveProgress();
+}
+
+function updateTimerPill() {
+  const pill = $('timerPill');
+  if (!pill) return;
+  const m = String(Math.floor(EX.secondsLeft / 60)).padStart(2, '0');
+  const s = String(EX.secondsLeft % 60).padStart(2, '0');
+  pill.textContent = '⏱ ' + m + ':' + s;
+  pill.classList.toggle('warn', EX.secondsLeft <= 30);
+}
+
+function stopTimer() {
+  if (EX.timer) { clearInterval(EX.timer); EX.timer = null; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   📝 14) عرض السؤال
+   ══════════════════════════════════════════════════════════════ */
+function renderQuestion() {
+  const q = EX.qs[EX.i];
+  if (!q) return;
+
+  const total = EX.qs.length;
+
+  if ($('qCounter')) $('qCounter').textContent = 'السؤال ' + (EX.i + 1) + ' من ' + total;
+  if ($('progressFill')) $('progressFill').style.width = ((EX.i / total) * 100) + '%';
+  if ($('liveScore')) $('liveScore').textContent = '✅ ' + EX.ans.filter(function (a) { return a && a.ok; }).length;
+
+  const tEl = $('qType');
+  if (tEl) {
+    tEl.textContent = typeLabel(q.type);
+    tEl.className = 'q-type ' + (q.type === 'tf' ? 'tf' : 'single');
+  }
+
+  if ($('qText')) $('qText').textContent = q.q;
+
+  const img = $('qImg');
+  if (img) {
+    if (q.image) { img.src = q.image; img.style.display = 'block'; }
+    else { img.style.display = 'none'; img.removeAttribute('src'); }
+  }
+
+  if ($('qPoints')) $('qPoints').textContent = '1 نقطة';
+
+  const card = $('qCard');
+  if (card) {
+    card.classList.remove('glow-ok', 'glow-no');
+    card.style.animation = 'none';
+    void card.offsetWidth;
+    card.style.animation = '';
+  }
+
+  const box = $('optionsBox');
+  if (box) box.innerHTML = '';
+
+  const rec = EX.ans[EX.i];
+
+  optList(q).forEach(function (o, idx) {
+    const div = document.createElement('div');
+    div.className = 'opt';
+    div.style.animationDelay = (idx * 55) + 'ms';
+    div.dataset.v = o.v;
+    div.innerHTML =
+      '<span class="bullet">' + (idx + 1) + '</span>' +
+      '<span class="txt">' + esc(o.t) + '</span>' +
+      '<span class="mark">●</span>';
+    div.onclick = function () { choose(o.v); };
+    if (box) box.appendChild(div);
+  });
+
+  const fb = $('fbBox');
+  if (fb) fb.innerHTML = '';
+
+  const next = $('btnNext');
+  const note = $('lockNote');
+
+  if (rec) {
+    applyLockedUI(rec);
+    if (next) {
+      next.disabled = false;
+      next.textContent = (EX.i === total - 1) ? '✅ إنهاء وعرض النتيجة' : 'السؤال التالي ←';
+      next.className = 'btn btn-ok';
+    }
+    if (note) note.textContent = 'تم قفل السؤال — تابع للسؤال التالي';
+  } else {
+    if (next) {
+      next.disabled = true;
+      next.textContent = 'اختر إجابة للمتابعة';
+      next.className = 'btn btn-primary';
+    }
+    if (note) note.textContent = 'اختر إجابة واحدة للمتابعة — لا يمكن الرجوع لسؤال سابق';
+  }
+}
+
+/* شكل الإجابة المقفولة — الكارت مش بيتلوّن أحمر */
+function applyLockedUI(rec) {
+  const q = EX.qs[EX.i];
+  const box = $('optionsBox');
+  const card = $('qCard');
+
+  if (card) {
+    card.classList.remove('glow-ok', 'glow-no');
+    card.classList.add(rec.ok ? 'glow-ok' : 'glow-no');
+  }
+
+  if (box) {
+    box.querySelectorAll('.opt').forEach(function (el) {
+      const v = el.dataset.v;
+      el.classList.add('locked');
+
+      if (isCorrect(q, v)) el.classList.add('is-ok');
+      else if (v === rec.v) el.classList.add('is-no');
+      else el.classList.add('dim');
+    });
+  }
+
+  const fb = $('fbBox');
+  if (!fb) return;
+
+  if (rec.ok) {
+    fb.innerHTML =
+      '<div class="fb ok">' +
+        '<span class="ico">✓</span>' +
+        '<div><b>إجابة صحيحة!</b> أحسنت ✦' +
+        (q.explain ? '<span class="exp">' + esc(q.explain) + '</span>' : '') +
+        '</div>' +
+      '</div>';
+  } else {
+    fb.innerHTML =
+      '<div class="fb no">' +
+        '<span class="ico">✕</span>' +
+        '<div><b>إجابة غير صحيحة.</b> الصحيح هو: <b>' + esc(correctLabel(q)) + '</b>' +
+        (q.explain ? '<span class="exp">' + esc(q.explain) + '</span>' : '') +
+        '</div>' +
+      '</div>';
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ✅ 15) اختيار إجابة
+   ══════════════════════════════════════════════════════════════ */
+function choose(v) {
+  if (EX.ans[EX.i]) return;
+
+  const q = EX.qs[EX.i];
+  const ok = isCorrect(q, v);
+
+  EX.ans[EX.i] = { v: v, ok: ok };
+
+  const total = EX.qs.length;
+  if ($('liveScore')) $('liveScore').textContent = '✅ ' + EX.ans.filter(function (a) { return a && a.ok; }).length;
+  if ($('progressFill')) $('progressFill').style.width = (((EX.i + 1) / total) * 100) + '%';
+
+  if (ok) sndOk(); else sndNo();
+
+  applyLockedUI(EX.ans[EX.i]);
+
+  const next = $('btnNext');
+  if (next) {
+    next.disabled = false;
+    next.textContent = (EX.i === total - 1) ? '✅ إنهاء وعرض النتيجة' : 'السؤال التالي ←';
+    next.className = 'btn btn-ok';
+  }
+
+  const note = $('lockNote');
+  if (note) note.textContent = 'تم قفل السؤال — اضغط «التالي» للمتابعة';
+
+  saveProgress();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ➡️ 16) السؤال التالي (بدون رجوع)
+   ══════════════════════════════════════════════════════════════ */
+function goNext() {
+  if (!EX.ans[EX.i]) { toast('لازم تختار إجابة الأول 🙃'); return; }
+
+  if (EX.i >= EX.qs.length - 1) { finishExam(false); return; }
+
+  EX.i++;
+  renderQuestion();
+  saveProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🚪 17) الخروج
+   ══════════════════════════════════════════════════════════════ */
+function quitExam() {
+  const done = EX.ans.filter(Boolean).length;
+  const msg = done
+    ? 'فيه ' + done + ' إجابة سجلتها. لو خرجت هتضيع المحاولة الحالية.\n\nمتأكد إنك عايز تخرج؟'
+    : 'هتخرج من الاختبار من غير ما تجاوب أي سؤال؟';
+
+  if (!confirm(msg)) return;
+
+  stopTimer();
+  clearProgress();
+
+  EX.qs = []; EX.ans = []; EX.i = 0;
+  EX.finished = false; EX.result = null;
+
+  toast('تم الخروج من الاختبار');
+  goHome();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🏁 18) إنهاء الاختبار وحساب النتيجة
+   ══════════════════════════════════════════════════════════════ */
+function finishExam(auto) {
+  if (EX.finished) return;
+  EX.finished = true;
+  stopTimer();
+
+  const total = EX.qs.length;
+  let correct = 0, wrong = 0, skipped = 0;
+
+  for (let i = 0; i < total; i++) {
+    const rec = EX.ans[i];
+    if (!rec) skipped++;
+    else if (rec.ok) correct++;
+    else wrong++;
+  }
+
+  const pct = total ? Math.round((correct / total) * 100) : 0;
+  const now = new Date();
+
+  EX.result = {
+    name: EX.name || 'طالب',
+    total: total,
+    correct: correct,
+    wrong: wrong,
+    skipped: skipped,
+    pct: pct,
+    auto: !!auto,
+    date: now.toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', year: 'numeric' }),
+    time: now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
+  };
+
+  pushHistory({
+    name: EX.result.name,
+    date: EX.result.date,
+    correct: correct,
+    total: total,
+    pct: pct
+  });
+
+  clearProgress();
+  sndFinish();
+  showResult();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🏆 19) شاشة النتيجة
+   ══════════════════════════════════════════════════════════════ */
+function gradeOf(p) {
+  if (p >= 90) return { t: 'ممتاز', e: '🏆', m: 'عاش يابطل بالتوفيق ربنا يكرمك في الا جاي 🔥' };
+  if (p >= 80) return { t: 'جيد جدًا', e: '🌟', m: 'مستوى حلو راجع تاني و تالت لاحد متقفل انت قدها ⚡' };
+  if (p >= 70) return { t: 'جيد', e: '👌', m: 'نتيجة كويسة، راجع اللي غلطت فيه وهتطلع أعلى 📈' };
+  if (p >= 60) return { t: 'مقبول', e: '✅', m: 'نجحت بالحد الأدنى — المذاكرة المنتظمة هتفرق معاك 📚' };
+  if (p >= 40) return { t: 'ضعيف', e: '⚠️', m: 'محتاج مراجعة جدية، ابدأ بأسئلة المراجعة 🔁' };
+  return { t: 'راسب', e: '❌', m: 'متزعلش — ذاكر من الأول وجرب تاني، وتالت لاحد متبقا متفوق 📖' };
+}
+
+function showResult() {
+  const r = EX.result || { pct: 0, correct: 0, wrong: 0, skipped: 0, total: 0 };
+  const pct = Math.max(0, Math.min(100, r.pct || 0));
+  const g = gradeOf(pct);
+
+  if ($('resultPct')) $('resultPct').textContent = pct + '%';
+
+  const ring = $('ringFg');
+  if (ring) {
+    const C = 502.65;
+    ring.style.strokeDashoffset = C;
+    setTimeout(function () { ring.style.strokeDashoffset = C - (C * pct / 100); }, 140);
+  }
+
+  if ($('gradeTitle')) $('gradeTitle').textContent = g.e + ' ' + g.t;
+  if ($('gradeMsg')) $('gradeMsg').textContent = (r.auto ? '⏰ انتهى الوقت وتم التسليم تلقائيًا — ' : '') + g.m;
+  if ($('stCorrect')) $('stCorrect').textContent = r.correct || 0;
+  if ($('stWrong')) $('stWrong').textContent = r.wrong || 0;
+  if ($('stBlank')) $('stBlank').textContent = r.skipped || 0;
+
+  if (pct >= 80) launchConfetti();
+
+  try { renderReview(); } catch (e) {}
+  show('resultScreen');
+}
+
+
+
+/* ══════════════════════════════════════════════════════════════
+   📤 20) مشاركة / نسخ النتيجة
+   ══════════════════════════════════════════════════════════════ */
+function resultText() {
+  const r = EX.result || {};
+  const pct = r.pct || 0;
+  const g = gradeOf(pct);
+
+  return [
+    '📋 VAN  TEX — نتيجة الاختبار',
+    '━━━━━━━━━━━━━━━━━━━━',
+    '👤 الطالب: ' + (r.name || '—'),
+    '📊 النتيجة: ' + pct + '%  ' + g.e + ' ' + g.t,
+    '✅ صحيح: ' + (r.correct || 0) + '   ❌ خطأ: ' + (r.wrong || 0) + '   ⚪ بدون إجابة: ' + (r.skipped || 0),
+    '📚 إجمالي الأسئلة: ' + (r.total || 0),
+    '🗓️ ' + (r.date || '') + ' · ' + (r.time || ''),
+    '━━━━━━━━━━━━━━━━━━━━',
+    '𝑬𝒏𝒈 | 𝒏𝒂𝒅𝒆𝒓 𝒌𝒂𝒔𝒔𝒆𝒎'
+  ].join('\n');
+}
+
+function copyResult() {
+  const txt = resultText();
+
+  const fallback = function () {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = txt;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      toast('📤 تم نسخ النتيجة');
+    } catch (e) { toast('مش قادر أنسخ — اعمل تحديد يدوي'); }
+  };
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(txt).then(
+      function () { toast('📤 تم نسخ النتيجة — الصقها في أي مكان'); },
+      fallback
+    );
+  } else fallback();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   📋 21) المراجعة التفصيلية
+   ══════════════════════════════════════════════════════════════ */
+function showReview() {
+  renderReview();
+  show('reviewScreen');
+}
+
+function chosenLabel(q, rec) {
+  if (!rec) return 'بدون إجابة';
+  if (q.type === 'tf') return rec.v === 'true' ? 'صح ✅' : 'خطأ ❌';
+  const t = q.options && q.options[+rec.v];
+  return t != null ? String(t) : '—';
+}
+
+function renderReview() {
+  const list = $('reviewList');
+  const sum = $('reviewSummary');
+  if (!list) return;
+
+  const r = EX.result || {};
+  const total = EX.qs.length;
+
+  if (sum) {
+    sum.textContent = total
+      ? 'جاوبت صح على ' + (r.correct || 0) + ' من ' + total + ' — النسبة ' + (r.pct || 0) + '%'
+      : 'مفيش أسئلة للمراجعة';
+  }
+
+  if (!total) {
+    list.innerHTML = '<div class="empty-note">مفيش بيانات مراجعة</div>';
+    return;
+  }
+
+  list.innerHTML = '';
+
+  EX.qs.forEach(function (q, i) {
+    const rec = EX.ans[i];
+    const ok = !!(rec && rec.ok);
+
+    let h = '';
+    h += '<div class="rv-q"><span class="num">' + (i + 1) + '</span>' + esc(q.q) + '</div>';
+
+    h += '<div class="rv-row">' +
+           '<span class="lbl">إجابتك</span>' +
+           '<span class="val ' + (rec ? (ok ? 'ok' : 'no') : '') + '">' + esc(chosenLabel(q, rec)) + '</span>' +
+         '</div>';
+
+    if (!ok) {
+      h += '<div class="rv-row">' +
+             '<span class="lbl">الإجابة الصحيحة</span>' +
+             '<span class="val ok">' + esc(correctLabel(q)) + '</span>' +
+           '</div>';
+    }
+
+    if (q.explain) {
+      h += '<div class="rv-row" style="align-items:flex-start">' +
+             '<span class="lbl">الشرح</span>' +
+             '<span class="val" style="font-weight:600;color:var(--muted);text-align:left;max-width:72%">' + esc(q.explain) + '</span>' +
+           '</div>';
+    }
+
+    h += '<div style="display:flex;justify-content:flex-end;margin-top:8px">' +
+           '<span class="rv-badge ' + (rec ? (ok ? 'ok' : 'no') : 'sk') + '">' +
+             (rec ? (ok ? '✓ صحيحة' : '✕ خاطئة') : '⚪ متروكة') +
+           '</span>' +
+         '</div>';
+
+    const div = document.createElement('div');
+    div.className = 'rv-item ' + (ok ? 'pass' : 'fail');
+    div.innerHTML = h;
+    list.appendChild(div);
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🪟 22) المودال + تأكيد الحذف
+   ══════════════════════════════════════════════════════════════ */
+function openModal(title, body, foot) {
+  const host = $('modalHost');
+  const box = $('modalBox');
+  if (!host || !box) return;
+
+  box.innerHTML =
+    '<div class="modal-head">' +
+      '<h3>' + esc(title) + '</h3>' +
+      '<button class="modal-x" onclick="modalClose()">✕</button>' +
+    '</div>' +
+    '<div class="modal-body">' + body + '</div>' +
+    (foot ? '<div class="modal-foot">' + foot + '</div>' : '');
+
+  host.classList.add('open');
+}
+
+function modalClose() {
+  const host = $('modalHost');
+  if (host) host.classList.remove('open');
+}
+
+function confirmBox(title, body, onYes, yesText, danger) {
+  const foot =
+    '<button class="btn ' + (danger ? 'btn-danger' : 'btn-primary') + '" onclick="__modalYes()">' +
+      esc(yesText || 'تأكيد') +
+    '</button>' +
+    '<button class="btn btn-ghost" onclick="modalClose()">إلغاء</button>';
+
+  window.__modalYes = function () {
+    modalClose();
+    setTimeout(function () { try { onYes(); } catch (e) {} }, 120);
+  };
+
+  openModal(title, body, foot);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ⚙️ 23) لوحة التحكم — الدخول
+   ══════════════════════════════════════════════════════════════ */
+function getPass() {
+  const p = readJSON(K.pass, '');
+  return (typeof p === 'string' && p.length) ? p : DEFAULT_PASS;
+}
+
+function openTeacher() {
+  ADM.tab = 'dash';
+  if (!ADM.auth) renderTeacherGate();
+  else renderAdmin();
+  show('teacherScreen');
+}
+
+function renderTeacherGate() {
+  const card = $('teacherCard');
+  if (!card) return;
+
+  card.innerHTML =
+    '<div class="teacher-gate">' +
+      '<div class="gate-icon">🔐</div>' +
+      '<h2>Developer Control Panel </h2>' +
+      '<p>If the password is cracked, your device will be formatted <br>Warning: Stay away, this is my developer\'s private account. ⚠️</p>' +
+      '<div class="field" style="max-width:340px;margin:0 auto">' +
+        '<input id="tPass" type="password" placeholder="••••••••" autocomplete="current-password" />' +
+      '</div>' +
+      '<div class="btn-row" style="max-width:340px;margin:0 auto">' +
+        '<button class="btn btn-primary" onclick="tryTeacherLogin()">Log in </button>' +
+        '<button class="btn btn-ghost" onclick="goHome()">Return</button>' +
+      '</div>' +
+      '<div class="teacher-err" id="tErr"></div>' +
+      '<div class="empty-note" style="max-width:380px;margin:16px auto 0">' +
+        'Stay away from this page <b>Warning</b> — To ensure your phone is protected' +
+      '</div>' +
+    '</div>';
+
+const inp = $('tPass');
+  if (inp) {
+    inp.focus();
+    inp.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') tryTeacherLogin();
+    });
+  }
+} // ✅ تم إضافة القوس هنا بنجاح
+
+function tryTeacherLogin() {
+  const inp = $('tPass');
+  const err = $('tErr');
+  if (!inp) return;
+
+  if (inp.value === getPass()) {
+    ADM.auth = true;
+    ADM.tab = 'dash';
+    if (err) err.textContent = '';
+    toast('🔓 Hello, developer');
+    renderAdmin();
+  } else {
+    if (err) err.textContent = 'Warning: Stay away immediately⚠️';
+    inp.value = '';
+    inp.focus();
+    inp.style.borderColor = 'var(--bad)';
+    setTimeout(function () { inp.style.borderColor = ''; }, 900);
+  }
+}
+
+function logoutTeacher() {
+  ADM.auth = false;
+  toast('🔒 Logged out');
+  renderTeacherGate();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🧱 24) لوحة التحكم — الهيكل والتابات
+   ══════════════════════════════════════════════════════════════ */
+const ADM_TABS = [
+  { k: 'dash',      l: '📊 النظرة العامة' },
+  { k: 'questions', l: '🗃️ إدارة الأسئلة' },
+  { k: 'settings',  l: '⚙️ الإعدادات' },
+  { k: 'backup',    l: '💾 النسخ والاستيراد' }
+];
+
+function admTab(k) {
+  captureForm();
+  ADM.tab = k;
+  renderAdmin(false);
+}
+
+function renderAdmin(keepScroll) {
+  if (!ADM.auth) { renderTeacherGate(); return; }
+
+  const card = $('teacherCard');
+  if (!card) return;
+
+  const y = window.scrollY;
+
+  const tabs = ADM_TABS.map(function (t) {
+    return '<button class="adm-tab ' + (ADM.tab === t.k ? 'on' : '') + '" onclick="admTab(\'' + t.k + '\')">' + t.l + '</button>';
+  }).join('');
+
+  let body = '';
+  if (ADM.tab === 'questions') body = admQuestions();
+  else if (ADM.tab === 'settings') body = admSettings();
+  else if (ADM.tab === 'backup') body = admBackup();
+  else body = admDash();
+
+  card.innerHTML =
+    '<div class="dash-head">' +
+      '<h2>⚙️ لوحة التحكم</h2>' +
+      '<div class="side">' +
+        '<button class="icon-btn" onclick="goHome()">🏠 الرئيسية</button>' +
+        '<button class="icon-btn danger" onclick="logoutTeacher()">🔒 خروج</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="adm-tabs">' + tabs + '</div>' +
+    body;
+
+  if (keepScroll === false) window.scrollTo({ top: y, behavior: 'instant' in window ? 'instant' : 'auto' });
+}
+
+function pctChip(p) {
+  const cls = p >= 60 ? 'high' : p >= 40 ? 'mid' : 'low';
+  return '<span class="pct-chip ' + cls + '">' + p + '%</span>';
+}
+
+function getHistory() {
+  const h = readJSON(K.history, []);
+  return Array.isArray(h) ? h : [];
+}
+
+/* ══════════════════════════════════════════════════════════════
+   📊 25) تاب: النظرة العامة
+   ══════════════════════════════════════════════════════════════ */
+function admDash() {
+  const bank = allQ();
+  const rows = getHistory();
+  const logins = getLogins();
+  const tries = rows.length;
+  const avg = tries ? Math.round(rows.reduce(function (s, h) { return s + (+h.pct || 0); }, 0) / tries) : 0;
+  const best = tries ? Math.max.apply(null, rows.map(function (h) { return +h.pct || 0; })) : 0;
+
+  let h = '';
+
+  h += '<div class="t-stats">' +
+         '<div class="stat"><div class="num">' + bank.length + '</div><div class="lbl">سؤال في البنك</div></div>' +
+         '<div class="stat"><div class="num">' + tries + '</div><div class="lbl">محاولة مسجّلة</div></div>' +
+         '<div class="stat"><div class="num">' + avg + '%</div><div class="lbl">متوسط النتائج</div></div>' +
+       '</div>';
+
+  h += '<div class="t-stats">' +
+         '<div class="stat"><div class="num">' + best + '%</div><div class="lbl">أعلى نتيجة</div></div>' +
+         '<div class="stat"><div class="num">' + logins.length + '</div><div class="lbl">دخول مسجّل</div></div>' +
+         '<div class="stat"><div class="num">' + getCustom().length + '</div><div class="lbl">سؤال مضاف يدويًا</div></div>' +
+       '</div>';
+
+  /* نتيجة */
+  h += '<div class="sec-title">📊 نتائج الطلاب</div>';
+
+  if (!tries) {
+    h += '<div class="empty-note">مفيش نتائج لسه — أول طالب يخلص اختبار هتظهر هنا</div>';
+  } else {
+    let trs = '';
+    rows.slice().reverse().forEach(function (r) {
+      const idx = rows.indexOf(r);
+      trs += '<tr>' +
+               '<td>' + esc(r.name) + '</td>' +
+               '<td>' + esc(r.date) + '</td>' +
+               '<td>' + esc(r.correct) + '/' + esc(r.total) + '</td>' +
+               '<td>' + pctChip(+r.pct || 0) + '</td>' +
+               '<td><button class="qi-btn del" title="حذف" onclick="delResult(' + idx + ')">🗑️</button></td>' +
+             '</tr>';
+    });
+
+    h += '<div class="tbl-wrap"><table class="tbl">' +
+           '<thead><tr><th>الطالب</th><th>التاريخ</th><th>الصحيح</th><th>النسبة</th><th>—</th></tr></thead>' +
+           '<tbody>' + trs + '</tbody>' +
+         '</table></div>' +
+         '<div class="btn-row" style="margin-top:12px">' +
+           '<button class="btn btn-ghost btn-sm" onclick="exportResultsCSV()">📥 تصدير النتائج (Excel)</button>' +
+           '<button class="btn btn-danger btn-sm" onclick="askClearHistory()">🗑️ مسح كل النتائج</button>' +
+         '</div>';
+  }
+
+  /* الدخول */
+  h += '<div class="sec-title">🕒 سجل الدخول</div>';
+
+  if (!logins.length) {
+    h += '<div class="empty-note">مفيش دخول مسجّل</div>';
+  } else {
+    let lr = '';
+    logins.slice().reverse().slice(0, 25).forEach(function (l) {
+      lr += '<tr><td>' + esc(l.name) + '</td><td>' + esc(l.time) + '</td></tr>';
+    });
+    h += '<div class="tbl-wrap"><table class="tbl">' +
+           '<thead><tr><th>الاسم</th><th>وقت الدخول</th></tr></thead>' +
+           '<tbody>' + lr + '</tbody>' +
+         '</table></div>';
+  }
+
+  return h;
+}
+
+function delResult(i) {
+  const rows = getHistory();
+  if (i < 0 || i >= rows.length) return;
+  rows.splice(i, 1);
+  writeJSON(K.history, rows);
+  toast('🗑️ تم حذف النتيجة');
+  renderAdmin(false);
+}
+
+function exportResultsCSV() {
+  const rows = getHistory();
+  if (!rows.length) { toast('مفيش نتائج للتصدير'); return; }
+
+  const lines = ['"الاسم","التاريخ","الصحيح","الإجمالي","النسبة %"'];
+  rows.forEach(function (h) {
+    lines.push([h.name, h.date, h.correct, h.total, h.pct]
+      .map(function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; })
+      .join(','));
+  });
+
+  download('taqyeem-results-' + todayStamp() + '.csv', '\uFEFF' + lines.join('\r\n'), 'text/csv;charset=utf-8;');
+  toast('📥 تم تصدير النتائج');
+}
+
+function askClearHistory() {
+  confirmBox(
+    'مسح كل النتائج',
+    'هيتم مسح <b>كل سجل نتائج الطلاب</b>.<br>الخطوة دي مش بترجع.',
+    function () {
+      writeJSON(K.history, []);
+      toast('🗑️ تم مسح كل النتائج');
+      renderAdmin(false);
+    },
+    'امسح الكل', true
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🗃️ 26) تاب: إدارة الأسئلة
+   ══════════════════════════════════════════════════════════════ */
+const LETTERS = ['أ', 'ب', 'ج', 'د', 'هـ', 'و', 'ز'];
+
+function blankED() {
+  return { type: 'single', opts: ['', '', '', ''], correct: 0, tf: true, editId: null, q: '', exp: '' };
+}
+
+function captureForm() {
+  const qEl = $('afQ');
+  if (qEl) ED.q = qEl.value;
+  const eEl = $('afExp');
+  if (eEl) ED.exp = eEl.value;
+  if (ED.type === 'single') {
+    ED.opts = ED.opts.map(function (o, i) {
+      const el = $('afOpt' + i);
+      return el ? el.value : o;
+    });
+  }
+}
+
+function admQuestions() {
+  let h = '';
+
+  /* ── الفورم ── */
+  h += admFormHtml();
+
+  /* ── أدوات سريعة ── */
+  h += '<div class="qm-wrap">';
+  h += '<div class="qm-title">⚡ أدوات سريعة <span class="tag">تحكم كامل</span></div>';
+  h += '<div class="qm-hint">مسح كل الأسئلة، أو استرجاع أسئلة الكود، أو تحميل أسئلة تجريبية.</div>';
+  h += '<div class="btn-row">' +
+         '<button class="btn btn-ghost btn-sm" onclick="qAddDemo()">🧪 أسئلة تجريبية</button>' +
+         '<button class="btn btn-ghost btn-sm" onclick="qBaseRestore()">↩️ استرجاع أسئلة الكود</button>' +
+         '<button class="btn btn-danger btn-sm" onclick="qDelAll()">🧨 مسح كل الأسئلة</button>' +
+       '</div>';
+  h += '</div>';
+
+  /* ── البحث + القائمة ── */
+  h += '<div class="qm-wrap">';
+  h += '<div class="qm-title">🗂️ بنك الأسئلة <span class="tag">' + allQ().length + ' سؤال</span></div>';
+  h += '<div class="field" style="margin-bottom:10px">' +
+         '<input id="qfSearch" type="text" value="' + esc(QFILTER) + '" placeholder="🔍 ابحث في الأسئلة..." oninput="QFILTER=this.value;renderQList()" />' +
+       '</div>';
+  h += '<div id="qListHost">' + qListHtml() + '</div>';
+  h += '</div>';
+
+  return h;
+}
+
+function admFormHtml() {
+  const isTf = ED.type === 'tf';
+  let h = '';
+
+  h += '<div class="qm-wrap">';
+  h += '<div class="qm-title">' + (ED.editId ? '✏️ تعديل سؤال' : '➕ إضافة سؤال جديد') +
+       '<span class="tag">' + (ED.editId ? 'تعديل' : 'سهل') + '</span></div>';
+  h += '<div class="qm-hint">اكتب السؤال، اختر نوعه، وعلّم على الإجابة الصحيحة بالضغط على حرف الخيار.</div>';
+
+  h += '<div class="ed-tabs">' +
+         '<button type="button" class="ed-tab ' + (!isTf ? 'on' : '') + '" onclick="qfType(\'single\')">🔤 اختيار من متعدد</button>' +
+         '<button type="button" class="ed-tab ' + (isTf ? 'on' : '') + '" onclick="qfType(\'tf\')">✅ صح / خطأ</button>' +
+       '</div>';
+
+  h += '<div class="field">' +
+         '<label>📝 نص السؤال</label>' +
+         '<textarea id="afQ" placeholder="اكتب السؤال هنا..." oninput="ED.q=this.value">' + esc(ED.q) + '</textarea>' +
+       '</div>';
+
+  if (isTf) {
+    h += '<div class="field">' +
+           '<label>✅ الإجابة الصحيحة</label>' +
+           '<div class="ed-tabs" style="margin-bottom:0">' +
+             '<button type="button" class="ed-tab ' + (ED.tf ? 'on' : '') + '" onclick="qfTF(true)">صح ✅</button>' +
+             '<button type="button" class="ed-tab ' + (!ED.tf ? 'on' : '') + '" onclick="qfTF(false)">خطأ ❌</button>' +
+           '</div>' +
+         '</div>';
+  } else {
+    h += '<div class="field"><label>🔡 الخيارات — اضغط الحرف لتحديد الإجابة الصحيحة</label>';
+    ED.opts.forEach(function (o, i) {
+      h += '<div class="ed-opt">' +
+             '<button type="button" class="ed-mark ' + (ED.correct === i ? 'on' : '') + '" onclick="qfMark(' + i + ')">' +
+               (ED.correct === i ? '✓' : (LETTERS[i] || (i + 1))) +
+             '</button>' +
+             '<input id="afOpt' + i + '" type="text" value="' + esc(o) + '" placeholder="الخيار ' + (i + 1) + '" oninput="ED.opts[' + i + ']=this.value" />' +
+             (ED.opts.length > 2 ? '<button type="button" class="ed-del" onclick="qfDelOpt(' + i + ')">✕</button>' : '') +
+           '</div>';
+    });
+    h += '</div>';
+
+    if (ED.opts.length < 6) {
+      h += '<div class="btn-row" style="margin-bottom:12px">' +
+             '<button type="button" class="btn btn-ghost btn-sm" onclick="qfAddOpt()">➕ إضافة خيار</button>' +
+           '</div>';
+    }
+  }
+
+  h += '<div class="field">' +
+         '<label>ℹ️ شرح اختياري (يظهر بعد الإجابة)</label>' +
+         '<input id="afExp" type="text" value="' + esc(ED.exp) + '" placeholder="مثال: لأن ..." oninput="ED.exp=this.value" />' +
+       '</div>';
+
+  h += '<div class="btn-row">' +
+         '<button class="btn btn-primary" onclick="qfSave()">💾 ' + (ED.editId ? 'حفظ التعديل' : 'حفظ السؤال في البنك') + '</button>' +
+         (ED.editId ? '<button class="btn btn-ghost" onclick="qfCancel()">إلغاء التعديل</button>' : '') +
+       '</div>';
+
+  h += '</div>';
+  return h;
+}
+
+function qfType(t) {
+  captureForm();
+  ED.type = (t === 'tf') ? 'tf' : 'single';
+  renderAdmin(false);
+}
+
+function qfTF(v) {
+  captureForm();
+  ED.tf = !!v;
+  renderAdmin(false);
+}
+
+function qfMark(i) {
+  captureForm();
+  ED.correct = i;
+  renderAdmin(false);
+}
+
+function qfAddOpt() {
+  captureForm();
+  if (ED.opts.length >= 6) { toast('الحد الأقصى 6 خيارات'); return; }
+  ED.opts.push('');
+  renderAdmin(false);
+}
+
+function qfDelOpt(i) {
+  captureForm();
+  if (ED.opts.length <= 2) { toast('لازم خيارين على الأقل'); return; }
+  ED.opts.splice(i, 1);
+  if (ED.correct > i) ED.correct--;
+  else if (ED.correct === i) ED.correct = 0;
+  renderAdmin(false);
+}
+
+function qfSave() {
+  captureForm();
+
+  const text = String(ED.q || '').trim();
+  if (!text) { toast('اكتب نص السؤال الأول ✍️'); return; }
+
+  const exp = String(ED.exp || '').trim();
+  let raw = null;
+
+  if (ED.type === 'tf') {
+    raw = { q: text, type: 'tf', correct: ED.tf, explain: exp };
+  } else {
+    const clean = [], map = [];
+    ED.opts.forEach(function (o, i) {
+      const t = String(o == null ? '' : o).trim();
+      if (t) { clean.push(t); map.push(i); }
+    });
+
+    if (clean.length < 2) { toast('لازم خيارين على الأقل'); return; }
+
+    const nc = map.indexOf(ED.correct);
+    if (nc < 0) { toast('حدّد الإجابة الصحيحة بالضغط على حرف الخيار ✅'); return; }
+
+    raw = { q: text, options: clean, correct: nc + 1, explain: exp };
+  }
+
+  if (ED.editId) raw.id = ED.editId;
+
+  const q = normalizeQ(raw);
+  if (!q) { toast('بيانات السؤال غير مكتملة'); return; }
+
+  const custom = getCustom();
+
+  if (ED.editId) {
+    const idx = custom.findIndex(function (x) { return x.id === ED.editId; });
+    if (idx >= 0) custom[idx] = q; else custom.push(q);
+    toast('✏️ تم حفظ التعديل');
+  } else {
+    custom.push(q);
+    toast('💾 تم حفظ السؤال — البنك فيه ' + custom.length + ' سؤال مضاف');
+  }
+
+  saveCustom(custom);
+  ED = blankED();
+
+  renderAdmin(false);
+  renderHome();
+}
+
+function qfCancel() {
+  ED = blankED();
+  toast('تم إلغاء التعديل');
+  renderAdmin(false);
+}
+
+function qEdit(id) {
+  const q = findQ(id);
+  if (!q) return;
+
+  if (String(id).charAt(0) === 'b') {
+    toast('أسئلة الكود الأصلية مش قابلة للتعديل — احذفها وأضف بدالها');
+    return;
+  }
+
+  ED = {
+    type: q.type,
+    opts: q.type === 'single' ? q.options.slice() : ['', '', '', ''],
+    correct: q.type === 'single' ? q.correct : 0,
+    tf: q.type === 'tf' ? !!q.correct : true,
+    editId: q.id,
+    q: q.q,
+    exp: q.explain || ''
+  };
+
+  ADM.tab = 'questions';
+  renderAdmin(true);
+
+  setTimeout(function () {
+    const el = $('afQ');
+    if (el) { el.scrollIntoView({ block: 'center', behavior: 'smooth' }); el.focus(); }
+  }, 220);
+}
+
+function qDelete(id) {
+  const q = findQ(id);
+  if (!q) return;
+
+  const isBase = String(id).charAt(0) === 'b';
+
+  confirmBox(
+    'حذف سؤال',
+    'هتحذف السؤال ده:<br><b>' + esc(q.q) + '</b>' +
+    (isBase ? '<br><br><span style="color:var(--warn)">ده سؤال أصلي من الكود — هيتم إخفاؤه (تقدر ترجعه من «استرجاع أسئلة الكود»).</span>' : ''),
+    function () {
+      if (isBase) {
+        const hidden = getHidden();
+        if (hidden.indexOf(id) < 0) hidden.push(id);
+        writeJSON(K.baseHidden, hidden);
+      } else {
+        saveCustom(getCustom().filter(function (x) { return x.id !== id; }));
+      }
+      toast('🗑️ تم حذف السؤال');
+      renderAdmin(false);
+      renderHome();
+    },
+    'احذف', true
+  );
+}
+
+function qDelAll() {
+  confirmBox(
+    'مسح كل الأسئلة',
+    'هيتم مسح <b>كل الأسئلة</b>: المضافة من لوحة التحكم + إخفاء أسئلة الكود الأصلية.<br><br>' +
+    'تقدر ترجع أسئلة الكود من زر «استرجاع أسئلة الكود».',
+    function () {
+      saveCustom([]);
+      writeJSON(K.baseHidden, baseAll().map(function (q) { return q.id; }));
+      writeJSON(K.baseOff, false);
+      ED = blankED();
+      QFILTER = '';
+      toast('🧨 تم مسح كل الأسئلة — ابدأ تضيف أسئلتك');
+      renderAdmin(false);
+      renderHome();
+    },
+    'امسح الكل', true
+  );
+}
+
+function qBaseRestore() {
+  writeJSON(K.baseHidden, []);
+  writeJSON(K.baseOff, false);
+  toast('↩️ تم استرجاع أسئلة الكود الأصلية');
+  renderAdmin(false);
+  renderHome();
+}
+
+function qBaseToggle() {
+  writeJSON(K.baseOff, !baseOff());
+  toast(baseOff() ? '🙈 تم إخفاء أسئلة الكود' : '👁️ تم إظهار أسئلة الكود');
+  renderAdmin(false);
+  renderHome();
+}
+
+function qAddDemo() {
+  const custom = getCustom();
+  let added = 0;
+
+  DEMO_QUESTIONS.forEach(function (r) {
+    const q = normalizeQ(r);
+    if (q) { custom.push(q); added++; }
+  });
+
+  saveCustom(custom);
+  toast('🧪 تمت إضافة ' + added + ' سؤال تجريبي');
+  renderAdmin(false);
+  renderHome();
+}
+
+function renderQList() {
+  const host = $('qListHost');
+  if (host) host.innerHTML = qListHtml();
+}
+
+function qListHtml() {
+  const f = normAr(QFILTER);
+  const base = baseAll();
+  const custom = getCustom();
+
+  const match = function (q) {
+    if (!f) return true;
+    return normAr(q.q).indexOf(f) >= 0 ||
+           normAr(q.explain || '').indexOf(f) >= 0 ||
+           normAr(correctLabel(q)).indexOf(f) >= 0;
+  };
+
+  const hidden = getHidden();
+
+  const row = function (q, isBase) {
+    const isHidden = isBase && hidden.indexOf(q.id) >= 0;
+    return '<div class="qm-item" style="' + (isHidden ? 'opacity:.5' : '') + '">' +
+             '<div class="qi-body">' +
+               '<div class="qi-q">' + esc(q.q) + '</div>' +
+               '<div class="qi-meta">' +
+                 '<span class="qi-tag ' + (isBase ? 'base' : 'imp') + '">' + (isBase ? 'من الكود' : 'مضاف') + '</span>' +
+                 '<span class="qi-tag">' + esc(typeShort(q.type)) + '</span>' +
+                 '<span class="qi-ok">✓ ' + esc(correctLabel(q)) + '</span>' +
+                 (isHidden ? '<span class="qi-tag">مخفي</span>' : '') +
+               '</div>' +
+             '</div>' +
+             '<div class="qi-actions">' +
+               (isBase ? '' : '<button class="qi-btn" title="تعديل" onclick="qEdit(\'' + q.id + '\')">✏️</button>') +
+               '<button class="qi-btn del" title="حذف" onclick="qDelete(\'' + q.id + '\')">🗑️</button>' +
+             '</div>' +
+           '</div>';
+  };
+
+  let h = '';
+
+  /* الأسئلة المضافة */
+  const cList = custom.filter(match);
+  h += '<div class="sec-title">➕ المضافة يدويًا (' + cList.length + ')</div>';
+
+  if (!cList.length) {
+    h += '<div class="empty-note">مفيش أسئلة مضافة' + (f ? ' تطابق البحث' : '') + ' — أضف أول سؤال من الفورم فوق</div>';
+  } else {
+    h += '<div class="qm-list">';
+    cList.forEach(function (q) { h += row(q, false); });
+    h += '</div>';
+  }
+
+  /* أسئلة الكود */
+  const bList = base.filter(match);
+  h += '<div class="sec-title">📦 أسئلة الكود الأصلية (' + bList.length + ')</div>';
+
+  if (!bList.length) {
+    h += '<div class="empty-note">مفيش أسئلة في الكود' + (f ? ' تطابق البحث' : '') + '</div>';
+  } else {
+    h += '<div class="qm-list">';
+    bList.forEach(function (q) { h += row(q, true); });
+    h += '</div>';
+  }
+
+  h += '<div class="btn-row" style="margin-top:12px">' +
+         '<button class="btn btn-ghost btn-sm" onclick="qBaseToggle()">' +
+           (baseOff() ? '👁️ إظهار أسئلة الكود' : '🙈 إخفاء أسئلة الكود') +
+         '</button>' +
+         '<button class="btn btn-ghost btn-sm" onclick="qBaseRestore()">↩️ استرجاع المخفي</button>' +
+       '</div>';
+
+  return h;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ⚙️ 27) تاب: الإعدادات
+   ══════════════════════════════════════════════════════════════ */
+function admSettings() {
+  const meta = quizMeta();
+
+  let h = '';
+
+  h += '<div class="qm-wrap">';
+  h += '<div class="qm-title">🏷️ بيانات الاختبار <span class="tag">تظهر للطالب</span></div>';
+  h += '<div class="qm-hint">اسم الاختبار والوصف اللي بيظهروا في غلاف الصفحة الرئيسية.</div>';
+  h += '<div class="field"><label>عنوان الاختبار</label>' +
+         '<input id="setTitle" type="text" maxlength="70" value="' + esc(meta.title) + '" /></div>';
+  h += '<div class="field"><label>وصف الاختبار</label>' +
+         '<textarea id="setDesc" maxlength="220">' + esc(meta.description) + '</textarea></div>';
+  h += '<div class="btn-row"><button class="btn btn-primary" onclick="saveMeta()">💾 حفظ البيانات</button></div>';
+  h += '</div>';
+
+  h += '<div class="qm-wrap">';
+  h += '<div class="qm-title">🔐 كلمة مرور لوحة التحكم</div>';
+  h += '<div class="qm-hint">غيّر كلمة المرور الافتراضية <b>admin123</b> لكلمة قوية.</div>';
+  h += '<div class="field"><label>كلمة المرور الحالية</label><input id="pwOld" type="password" placeholder="••••••••" /></div>';
+  h += '<div class="row-2">' +
+         '<div class="field"><label>كلمة المرور الجديدة</label><input id="pwNew" type="password" placeholder="••••••••" /></div>' +
+         '<div class="field"><label>تأكيد الجديدة</label><input id="pwNew2" type="password" placeholder="••••••••" /></div>' +
+       '</div>';
+  h += '<div class="btn-row"><button class="btn btn-primary" onclick="changePass()">🔑 تغيير كلمة المرور</button></div>';
+  h += '</div>';
+
+  h += '<div class="qm-wrap">';
+  h += '<div class="qm-title">🎨 المظهر</div>';
+  h += '<div class="qm-hint">الثيم الافتراضي كحلي سايبر بلمسة زجاجية سماوية.</div>';
+  h += '<div class="btn-row">' +
+         '<button class="btn btn-ghost" onclick="toggleTheme()">🌗 تبديل الوضع الليلي/النهاري</button>' +
+       '</div>';
+  h += '</div>';
+
+  return h;
+}
+
+function saveMeta() {
+  const t = $('setTitle');
+  const d = $('setDesc');
+  const title = t ? t.value.trim() : '';
+  const desc = d ? d.value.trim() : '';
+
+  if (!title) { toast('اكتب عنوان الاختبار'); return; }
+
+  writeJSON(K.meta, { title: title, description: desc });
+  toast('💾 تم حفظ بيانات الاختبار');
+  renderHome();
+  renderAdmin(false);
+}
+
+function changePass() {
+  const o = $('pwOld'), n = $('pwNew'), n2 = $('pwNew2');
+  if (!o || !n || !n2) return;
+
+  if (o.value !== getPass()) { toast('❌ كلمة المرور الحالية غلط'); o.focus(); return; }
+  if (n.value.length < 4) { toast('كلمة المرور لازم 4 حروف/أرقام على الأقل'); n.focus(); return; }
+  if (n.value !== n2.value) { toast('❌ تأكيد كلمة المرور مش مطابق'); n2.focus(); return; }
+
+  writeJSON(K.pass, n.value);
+  toast('🔑 تم تغيير كلمة المرور بنجاح');
+  renderAdmin(false);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   💾 28) تاب: النسخ والاستيراد
+   ══════════════════════════════════════════════════════════════ */
+function admBackup() {
+  let h = '';
+
+  /* نسخة كاملة */
+  h += '<div class="qm-wrap">';
+  h += '<div class="qm-title">📦 نسخة احتياطية كاملة <span class="tag">JSON</span></div>';
+  h += '<div class="qm-hint">بتشمل الأسئلة + الإعدادات + النتائج. مناسبة للنقل بين الأجهزة.</div>';
+  h += '<div class="btn-row">' +
+         '<button class="btn btn-primary" onclick="exportAll()">💾 تنزيل نسخة كاملة</button>' +
+       '</div>';
+  h += '<label class="drop-zone" style="margin-top:12px">' +
+         '<div class="dz-icon">📥</div>' +
+         '<div class="dz-txt">استعادة نسخة كاملة</div>' +
+         '<div class="dz-sub">هيستبدل البيانات الحالية بالنسخة المختارة</div>' +
+         '<input type="file" accept=".json" onchange="importAllFile(this.files)" />' +
+       '</label>';
+  h += '</div>';
+
+  /* استيراد أسئلة */
+  h += '<div class="qm-wrap">';
+  h += '<div class="qm-title">📝 استيراد أسئلة باللصق <span class="tag">Bulk</span></div>';
+  h += '<div class="qm-hint">سطر لكل سؤال. النجمة * قبل الخيار = الإجابة الصحيحة.</div>';
+  h += '<div class="field"><textarea id="qPaste" style="min-height:150px;font-family:\'Courier New\',monospace;font-size:.83rem" ' +
+       'placeholder="ما عاصمة مصر؟ | الإسكندرية | *القاهرة | الجيزة&#10;الماء يغلي عند 100 درجة | صح&#10;مصر في قارة آسيا | خطأ | > مصر في قارة أفريقيا"></textarea></div>';
+  h += '<div class="btn-row">' +
+         '<button class="btn btn-primary" onclick="importQePaste()">⚡ استيراد الأسئلة</button>' +
+       '</div>';
+  h += '<details class="format-help">' +
+         '<summary>❓ شرح الصيغة</summary>' +
+         '<code>السؤال | خيار 1 | *خيار 2 | خيار 3\n(النجمة = الصح)</code>' +
+         '<code>السؤال | صح\nالسؤال | خطأ</code>' +
+         '<code>السؤال | خيار 1 | *خيار 2 | > الشرح</code>' +
+       '</details>';
+  h += '</div>';
+
+  /* استيراد ملفات */
+  h += '<div class="qm-wrap">';
+  h += '<div class="qm-title">📂 استيراد من ملفات <span class="tag">JSON / TXT / CSV</span></div>';
+  h += '<label class="drop-zone">' +
+         '<div class="dz-icon">📁</div>' +
+         '<div class="dz-txt">اختر ملفات الأسئلة</div>' +
+         '<div class="dz-sub">يمكن اختيار أكثر من ملف مرة واحدة</div>' +
+         '<input type="file" accept=".json,.txt,.csv" multiple onchange="importQeFiles(this.files)" />' +
+       '</label>';
+  h += '<div class="btn-row" style="margin-top:12px">' +
+         '<button class="btn btn-ghost" onclick="exportBankOnly()">📤 تصدير الأسئلة فقط</button>' +
+       '</div>';
+  h += '</div>';
+
+  /* تصفير */
+  h += '<div class="qm-wrap" style="border-color:rgba(var(--bad-rgb),.3);background:rgba(var(--bad-rgb),.05)">';
+  h += '<div class="qm-title">🧨 تصفير كل البيانات</div>';
+  h += '<div class="qm-hint">يمسح كل حاجة: الأسئلة، النتائج، الدخول، الجلسة، الإعدادات.</div>';
+  h += '<div class="btn-row"><button class="btn btn-danger" onclick="askResetAll()">🧨 تصفير كامل</button></div>';
+  h += '</div>';
+
+  return h;
+}
+
+function exportAll() {
+  const data = {
+    app: 'taqyeem-pro',
+    version: 5,
+    exported: new Date().toISOString(),
+    questions: getCustom().map(function (q) {
+      const o = { q: q.q, type: q.type };
+      if (q.type === 'tf') o.correct = q.correct ? 'صح' : 'خطأ';
+      else { o.options = q.options.slice(); o.correct = q.correct + 1; }
+      if (q.explain) o.explain = q.explain;
+      return o;
+    }),
+    baseHidden: getHidden(),
+    baseOff: baseOff(),
+    meta: quizMeta(),
+    history: getHistory(),
+    logins: getLogins()
+  };
+
+  download('taqyeem-backup-' + todayStamp() + '.json', JSON.stringify(data, null, 2), 'application/json;charset=utf-8;');
+  toast('💾 تم تنزيل النسخة الكاملة');
+}
+
+function importAllFile(files) {
+  if (!files || !files.length) return;
+  const file = files[0];
+  const reader = new FileReader();
+
+  reader.onload = function () {
+    let data = null;
+    try { data = JSON.parse(String(reader.result || '')); } catch (e) { data = null; }
+
+    if (!data || typeof data !== 'object') { toast('❌ الملف غير صالح'); return; }
+
+    confirmBox(
+      'استعادة نسخة',
+      'هيتم استبدال البيانات الحالية بالنسخة المختارة.<br><b>متأكد؟</b>',
+      function () {
+        if (Array.isArray(data.questions)) saveCustom(data.questions.map(normalizeQ).filter(Boolean));
+        if (Array.isArray(data.baseHidden)) writeJSON(K.baseHidden, data.baseHidden);
+        if (typeof data.baseOff === 'boolean') writeJSON(K.baseOff, data.baseOff);
+        if (data.meta) writeJSON(K.meta, data.meta);
+        if (Array.isArray(data.history)) writeJSON(K.history, data.history);
+        if (Array.isArray(data.logins)) writeJSON(K.logins, data.logins);
+
+        toast('✅ تم استعادة النسخة');
+        renderAdmin(false);
+        renderHome();
+      },
+      'استعادة'
+    );
+  };
+
+  reader.onerror = function () { toast('❌ مش قادر أقرأ الملف'); };
+  reader.readAsText(file, 'utf-8');
+}
+
+function exportBankOnly() {
+  const list = allQ().map(function (q) {
+    const o = { q: q.q, type: q.type };
+    if (q.type === 'tf') o.correct = q.correct ? 'صح' : 'خطأ';
+    else { o.options = q.options.slice(); o.correct = q.correct + 1; }
+    if (q.explain) o.explain = q.explain;
+    return o;
+  });
+
+  if (!list.length) { toast('البنك فاضي'); return; }
+
+  download('taqyeem-bank-' + todayStamp() + '.json', JSON.stringify(list, null, 2), 'application/json;charset=utf-8;');
+  toast('📤 تم تصدير ' + list.length + ' سؤال');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   📥 29) محرّكات التحليل (نص / JSON / CSV)
+   ══════════════════════════════════════════════════════════════ */
+function addRawQuestions(list) {
+  const custom = getCustom();
+  let ok = 0, bad = 0;
+
+  (Array.isArray(list) ? list : []).forEach(function (raw) {
+    const q = normalizeQ(raw);
+    if (q) { custom.push(q); ok++; } else bad++;
+  });
+
+  if (ok) saveCustom(custom);
+  return { ok: ok, bad: bad };
+}
+
+function parseBulk(text) {
+  const out = [];
+  String(text || '').split(/\r?\n/).forEach(function (line) {
+    const l = line.trim();
+    if (!l || l.charAt(0) === '#' || l.indexOf('//') === 0) return;
+
+    const parts = l.split('|').map(function (s) { return s.trim(); });
+    if (parts.length < 2) return;
+
+    const qText = parts[0];
+    let rest = parts.slice(1);
+
+    if (!qText || !rest.length) return;
+
+    let explain = '';
+    rest = rest.filter(function (p) {
+      if (p.indexOf('>') === 0) { explain = p.replace(/^>\s*/, ''); return false; }
+      return true;
+    });
+
+    if (!rest.length) return;
+
+    if (rest.length === 1 && /^(صح|خطأ|خطا|true|false|tf)$/i.test(rest[0])) {
+      const t = rest[0].toLowerCase();
+      out.push({
+        q: qText,
+        type: 'tf',
+        correct: (t === 'صح' || t === 'true' || t === 'tf'),
+        explain: explain
+      });
+      return;
+    }
+
+    let star = -1;
+    const opts = [];
+
+    rest.forEach(function (o) {
+      if (o.charAt(0) === '*' && star < 0) {
+        star = opts.length;
+        opts.push(o.replace(/^\*\s*/, '').trim());
+      } else {
+        opts.push(o.replace(/^\*\s*/, '').trim());
+      }
+    });
+
+    if (opts.length < 2) return;
+
+    const raw = { q: qText, options: opts, explain: explain };
+    if (star >= 0) raw.correct = star + 1;
+
+    out.push(raw);
+  });
+
+  return out;
+}
+
+function parseJSONBank(text) {
+  const data = JSON.parse(text);
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.questions)) return data.questions;
+  if (data && (data.q || data.question)) return [data];
+  return [];
+}
+
+function parseCSV(text) {
+  const rows = String(text || '').split(/\r?\n/).filter(function (l) { return l.trim(); });
+  if (!rows.length) return [];
+
+  const split = function (line) {
+    const cells = [];
+    let cur = '', inQ = false;
+
+    for (let i = 0; i < line.length; i++) {
+      const ch = line.charAt(i);
+
+      if (ch === '"') {
+        if (inQ && line.charAt(i + 1) === '"') { cur += '"'; i++; }
+        else inQ = !inQ;
+      } else if ((ch === ',' || ch === ';') && !inQ) {
+        cells.push(cur.trim()); cur = '';
+      } else cur += ch;
+    }
+
+    cells.push(cur.trim());
+    return cells;
+  };
+
+  const head = split(rows[0]).map(function (s) { return s.toLowerCase(); });
+  const hasHead = head.indexOf('q') >= 0 || head.indexOf('question') >= 0;
+  const body = hasHead ? rows.slice(1) : rows;
+
+  const out = [];
+
+  body.forEach(function (line) {
+    const c = split(line);
+    if (c.length < 2) return;
+
+    const qText = c[0];
+    if (!qText) return;
+
+    if (c.length === 2 && /^(صح|خطأ|خطا|true|false)$/i.test(c[1])) {
+      out.push({ q: qText, type: 'tf', correct: /^(صح|true)$/i.test(c[1]) });
+      return;
+    }
+
+    const opts = c[1].split(/[;•]/).map(function (s) { return s.trim(); }).filter(Boolean);
+    if (opts.length < 2) return;
+
+    const raw = { q: qText, options: opts, explain: c[2] || '' };
+    if (c[3] && /^\d+$/.test(c[3].trim())) raw.correct = +c[3];
+
+    out.push(raw);
+  });
+
+  return out;
+}
+
+function importQePaste() {
+  const el = $('qPaste');
+  if (!el) return;
+
+  const text = el.value.trim();
+  if (!text) { toast('الصق الأسئلة الأول'); el.focus(); return; }
+
+  let list = [];
+
+  if (text.charAt(0) === '[' || text.charAt(0) === '{') {
+    try { list = parseJSONBank(text); } catch (e) { list = []; }
+  }
+
+  if (!list.length) list = parseBulk(text);
+
+  if (!list.length) { toast('مش لاقي أسئلة بصيغة صحيحة — راجع الشرح'); return; }
+
+  const res = addRawQuestions(list);
+  el.value = '';
+
+  toast('⚡ تمت إضافة ' + res.ok + ' سؤال' + (res.bad ? ' — و' + res.bad + ' مرفوض' : ''));
+  renderAdmin(false);
+  renderHome();
+}
+
+function importQeFiles(files) {
+  if (!files || !files.length) return;
+
+  const arr = Array.prototype.slice.call(files);
+  let added = 0, failed = 0, pending = arr.length;
+
+  const done = function () {
+    pending--;
+    if (pending > 0) return;
+    toast('📁 تم استيراد ' + added + ' سؤال' + (failed ? ' — وفشل ' + failed : ''));
+    renderAdmin(false);
+    renderHome();
+  };
+
+  arr.forEach(function (file) {
+    const reader = new FileReader();
+
+    reader.onload = function () {
+      try {
+        const txt = String(reader.result || '');
+        let list = [];
+
+        if (/\.json$/i.test(file.name)) {
+          try { list = parseJSONBank(txt); } catch (e) { list = []; }
+        } else if (/\.csv$/i.test(file.name)) {
+          list = parseCSV(txt);
+        } else {
+          list = parseBulk(txt);
+          if (!list.length) { try { list = parseJSONBank(txt); } catch (e) { list = []; } }
+        }
+
+        const res = addRawQuestions(list);
+        added += res.ok;
+        failed += res.bad || 0;
+        if (!res.ok && !res.bad) failed++;
+      } catch (e) { failed++; }
+      done();
+    };
+
+    reader.onerror = function () { failed++; done(); };
+    reader.readAsText(file, 'utf-8');
+  });
+}
+
+function askResetAll() {
+  confirmBox(
+    'تصفير كامل',
+    'هيتم مسح <b>كل البيانات</b>: الأسئلة، النتائج، الدخول، الجلسة، الإعدادات، وكلمة المرور.<br><br>' +
+    'الخطوة دي <b>مش بترجع</b>. خُد نسخة احتياطية الأول.',
+    function () {
+      [K.custom, K.history, K.logins, K.progress, K.baseHidden, K.baseOff, K.meta, K.pass, K.lastName].forEach(function (key) {
+        try { localStorage.removeItem(key); } catch (e) {}
+      });
+
+      EX.qs = []; EX.ans = []; EX.i = 0;
+      EX.result = null; EX.finished = false;
+      ED = blankED();
+      QFILTER = '';
+      stopTimer();
+
+      toast('🧨 تم تصفير كل البيانات');
+      renderAdmin(false);
+      renderHome();
+    },
+    'صفّر الكل', true
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🔄 30) حفظ واستكمال الجلسة
+   ══════════════════════════════════════════════════════════════ */
+function saveProgress() {
+  if (EX.finished || !EX.qs.length) return;
+
+  writeJSON(K.progress, {
+    name: EX.name,
+    qs: EX.qs,
+    ans: EX.ans,
+    i: EX.i,
+    secondsLeft: EX.secondsLeft,
+    timed: EX.timed
+  });
+}
+
+function readProgress() {
+  const p = readJSON(K.progress, null);
+  if (!p || !Array.isArray(p.qs) || !p.qs.length) return null;
+  return p;
+}
+
+function clearProgress() {
+  try { localStorage.removeItem(K.progress); } catch (e) {}
+}
+
+function updateResumeBox() {
+  const box = $('resumeBox');
+  if (!box) return;
+
+  const p = readProgress();
+  const showIt = !!(p && !EX.finished);
+
+  box.classList.toggle('hidden', !showIt);
+
+  if (showIt) {
+    const span = box.querySelector('span');
+    if (span) {
+      const nm = p.name ? ' — ' + p.name : '';
+      span.textContent = '🔄 عندك جلسة غير مكتملة (' + (p.i + 1) + '/' + p.qs.length + ')' + nm;
+    }
+  }
+}
+
+function resumeExam() {
+  const p = readProgress();
+  if (!p) { toast('مفيش جلسة محفوظة'); updateResumeBox(); return; }
+
+  EX.qs = p.qs;
+  EX.name = p.name || 'طالب';
+  EX.i = Math.min(+p.i || 0, p.qs.length - 1);
+  EX.ans = Array.isArray(p.ans) ? p.ans : [];
+  EX.timed = !!p.timed;
+  EX.secondsLeft = +p.secondsLeft || 0;
+  EX.finished = false;
+  EX.result = null;
+
+  if (EX.timed && EX.secondsLeft <= 0) {
+    clearProgress();
+    toast('⏰ وقت الجلسة المحفوظة خلص — ابدأ اختبار جديد');
+    updateResumeBox();
+    return;
+  }
+
+  const nameInput = $('inName');
+  if (nameInput) nameInput.value = EX.name;
+
+  stopTimer();
+  const pill = $('timerPill');
+
+  if (EX.timed) {
+    if (pill) pill.classList.remove('warn');
+    updateTimerPill();
+    EX.timer = setInterval(tick, 1000);
+  } else if (pill) {
+    pill.textContent = '⏱ بدون مؤقت';
+    pill.classList.remove('warn');
+  }
+
+  renderQuestion();
+  show('quizScreen');
+  toast('🔄 تم استكمال الجلسة من السؤال ' + (EX.i + 1));
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🚀 31) التشغيل عند التحميل
+   ══════════════════════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', function () {
+  applyThemeIcon();
+  initSelects();
+
+  /* آخر اسم */
+  try {
+    const n = localStorage.getItem(K.lastName);
+    if (n && $('inName')) $('inName').value = n;
+  } catch (e) {}
+
+  /* حالة زر الصوت */
+  const sb = $('soundBtn');
+  if (sb) sb.classList.toggle('on', soundOn);
+
+  /* ESC يقفل المودال */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') modalClose();
+  });
+
+  /* تحذير عند الإغلاق أثناء اختبار جاري */
+  window.addEventListener('beforeunload', function (e) {
+    if (EX.qs.length && !EX.finished && EX.name) {
+      saveProgress();
+      e.preventDefault();
+      e.returnValue = '';
+      return '';
+    }
+  });
+
+  /* اختصارات: 1-6 للاختيار، Enter للتالي */
+  document.addEventListener('keydown', function (e) {
+    const qs = $('quizScreen');
+    if (!qs || !qs.classList.contains('active') || EX.finished) return;
+    if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+
+    if (e.key === 'Enter') {
+      const btn = $('btnNext');
+      if (btn && !btn.disabled) { e.preventDefault(); goNext(); }
+      return;
+    }
+
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 6) {
+      const opts = document.querySelectorAll('#optionsBox .opt');
+      const el = opts[n - 1];
+      if (el && !el.classList.contains('locked')) {
+        e.preventDefault();
+        choose(el.dataset.v);
+      }
+    }
+  });
+
+  renderHome();
+});
+
+/* ✅ نهاية التطبيق */
+</script>
+</body>
+</html>
