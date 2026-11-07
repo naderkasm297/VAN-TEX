@@ -1952,7 +1952,7 @@ function renderHome() {
   if (note) {
     if (!bank.length) {
       note.innerHTML = '<div class="empty-note" style="margin-bottom:18px">' +
-        '🗃️ Please wait until the questions have finished loading — VAN <b>Postponement</b> Please wait until you are notified that the questions have been released.' +
+        '🗃️ بنك الأسئلة فاضي حاليًا — ادخل <b>لوحة التحكم (المطور)</b> وأضف أسئلتك.' +
       '</div>';
     } else note.innerHTML = '';
   }
@@ -2025,7 +2025,7 @@ function startExam() {
 
   const bank = allQ();
   if (!bank.length) {
-    toast('انتظر حتا اضافة الاسئله — Thank you for your patience');
+    toast('بنك الأسئلة فاضي — أضف أسئلة من لوحة التحكم');
     return;
   }
 
@@ -3708,6 +3708,432 @@ window.addEventListener('DOMContentLoaded', function () {
 
   renderHome();
 });
+
+
+
+
+
+
+/* ══════════════════════════════════════════════════════════════
+   ☁️☁️☁️  قسم الفيرباس الكامل — قاعدة بيانات سحابية (Firestore)
+   ──────────────────────────────────────────────────────────────
+   ✦ كل الأسئلة / النتائج / الدخول / الإعدادات على السحابة
+   ✦ المطور يتحكم من أي جهاز — وكل حاجة تتطبق على الموقع فورًا
+   ✦ لو النت قطع → الموقع يكمل شغال من localStorage بدون مشاكل
+   ✦ مكان اللصق: آخر الجافاسكربت (قبل نهاية الكود)
+   ══════════════════════════════════════════════════════════════ */
+
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBV6z8cCVOKCn3Tb66v3bjxHalGAveqjQA",
+  authDomain: "vantex-db.firebaseapp.com",
+  projectId: "vantex-db",
+  storageBucket: "vantex-db.firebasestorage.app",
+  messagingSenderId: "750835659495",
+  appId: "1:750835659495:web:6920f9b455c30bac03a842",
+  measurementId: "G-YYEWDB3V37"
+};
+
+const CLOUD = {
+  online: false,   // الفيرباس شغال؟
+  booted: false,   // أول تحميل خلص؟
+  questions: [],   // الأسئلة من السحابة
+  results: [],     // نتائج الطلاب
+  logins: [],      // سجل الدخول
+  meta: null       // عنوان + وصف الاختبار
+};
+
+let _fsdb = null;
+
+/* ── تحميل مكتبة الفيرباس تلقائيًا لو مش موجودة في الـ head ── */
+function cloudLoadSDK(done) {
+  if (window.firebase && firebase.firestore) { done(); return; }
+
+  const s1 = document.createElement('script');
+  s1.src = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js';
+  s1.onload = function () {
+    const s2 = document.createElement('script');
+    s2.src = 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js';
+    s2.onload = done;
+    s2.onerror = function () { console.warn('⚠️ فشل تحميل Firestore — وضع أوفلاين'); };
+    document.head.appendChild(s2);
+  };
+  s1.onerror = function () { console.warn('⚠️ فشل تحميل Firebase — وضع أوفلاين'); };
+  document.head.appendChild(s1);
+}
+
+/* ── تشغيل الاتصال وفتح قنوات الاستماع الحية ── */
+function cloudInit() {
+  cloudLoadSDK(function () {
+    try {
+      firebase.initializeApp(FIREBASE_CONFIG);
+      _fsdb = firebase.firestore();
+
+      /* 📡 الأسئلة */
+      _fsdb.collection('questions').onSnapshot(function (snap) {
+        CLOUD.questions = snap.docs.map(function (d) {
+          return normalizeQ(Object.assign({ id: d.id }, d.data()));
+        }).filter(Boolean);
+        cloudReady();
+        if (CLOUD.booted) { try { renderHome(); } catch (e) {} }
+      }, cloudError);
+
+      /* 📡 النتائج */
+      _fsdb.collection('results').orderBy('ts', 'desc').limit(500).onSnapshot(function (snap) {
+        CLOUD.results = snap.docs.map(function (d) {
+          const v = d.data();
+          return {
+            _id: d.id,
+            name: v.name || 'طالب',
+            date: v.date || '',
+            correct: v.correct || 0,
+            total: v.total || 0,
+            pct: v.pct || 0,
+            ts: v.ts || 0
+          };
+        });
+        cloudReady();
+        if (CLOUD.booted) refreshAdminCloud();
+      }, cloudError);
+
+      /* 📡 سجل الدخول */
+      _fsdb.collection('logins').orderBy('ts', 'desc').limit(300).onSnapshot(function (snap) {
+        CLOUD.logins = snap.docs.map(function (d) {
+          const v = d.data();
+          return { _id: d.id, name: v.name || '', time: v.time || '' };
+        });
+        cloudReady();
+        if (CLOUD.booted) refreshAdminCloud();
+      }, cloudError);
+
+      /* 📡 إعدادات الاختبار */
+      _fsdb.doc('settings/meta').onSnapshot(function (snap) {
+        CLOUD.meta = snap.exists ? snap.data() : null;
+        cloudReady();
+        if (CLOUD.booted) { try { renderHome(); } catch (e) {} }
+      }, cloudError);
+
+    } catch (e) {
+      console.warn('⚠️ مشكلة في تشغيل الفيرباس:', e);
+    }
+  });
+}
+
+function cloudError(e) {
+  console.warn('⚠️ Firestore:', e && e.message ? e.message : e);
+}
+
+function cloudReady() {
+  if (CLOUD.online) return;
+  CLOUD.online = true;
+  CLOUD.booted = true;
+  console.log('☁️ الفيرباس متصل — الموقع شغال بالسحابة');
+  try { renderHome(); } catch (e) {}
+  if (ADM.auth) { try { renderAdmin(false); } catch (e) {} }
+}
+
+function refreshAdminCloud() {
+  if (!ADM.auth) return;
+  try {
+    if (ADM.tab === 'dash' || ADM.tab === 'backup') renderAdmin(false);
+  } catch (e) {}
+}
+
+/* ── حفظ/تحديث سؤال واحد ── */
+async function cloudSaveQuestion(q) {
+  if (!CLOUD.online) return false;
+  try {
+    const data = { type: q.type, q: q.q, explain: q.explain || '', updated: Date.now() };
+    if (q.type === 'tf') data.correct = !!q.correct;
+    else { data.options = q.options.slice(); data.correct = q.correct; }
+    await _fsdb.collection('questions').doc(q.id).set(data, { merge: true });
+    return true;
+  } catch (e) { cloudError(e); return false; }
+}
+
+/* ── مزامنة كل بنك الأسئلة (جديد + معدّل + محذوف) ── */
+async function cloudSyncQuestions(arr) {
+  if (!CLOUD.online) return false;
+  try {
+    const currentIds = CLOUD.questions.map(function (q) { return q.id; });
+    const newIds = arr.map(function (q) { return q.id; });
+    const batch = _fsdb.batch();
+
+    currentIds.forEach(function (id) {
+      if (newIds.indexOf(id) < 0) batch.delete(_fsdb.collection('questions').doc(id));
+    });
+
+    arr.forEach(function (q) {
+      const data = { type: q.type, q: q.q, explain: q.explain || '' };
+      if (q.type === 'tf') data.correct = !!q.correct;
+      else { data.options = q.options.slice(); data.correct = q.correct; }
+      batch.set(_fsdb.collection('questions').doc(q.id), data, { merge: true });
+    });
+
+    await batch.commit();
+    return true;
+  } catch (e) { cloudError(e); return false; }
+}
+
+/* ── حفظ إعدادات الاختبار ── */
+async function cloudSaveMeta(meta) {
+  if (!CLOUD.online) return false;
+  try {
+    await _fsdb.doc('settings/meta').set(meta, { merge: true });
+    return true;
+  } catch (e) { cloudError(e); return false; }
+}
+
+/* ── إضافة نتيجة طالب ── */
+async function cloudPushResult(entry) {
+  if (!CLOUD.online) return false;
+  try {
+    entry.ts = Date.now();
+    await _fsdb.collection('results').add(entry);
+    return true;
+  } catch (e) { cloudError(e); return false; }
+}
+
+/* ── حذف نتيجة ── */
+async function cloudDeleteResult(id) {
+  if (!CLOUD.online) return false;
+  try {
+    await _fsdb.collection('results').doc(id).delete();
+    return true;
+  } catch (e) { cloudError(e); return false; }
+}
+
+/* ── تسجيل دخول ── */
+async function cloudPushLogin(name) {
+  if (!CLOUD.online) return false;
+  try {
+    await _fsdb.collection('logins').add({
+      name: name,
+      time: loginStamp(),
+      ts: Date.now()
+    });
+    return true;
+  } catch (e) { cloudError(e); return false; }
+}
+
+function loginStamp() {
+  const n = new Date();
+  return n.toLocaleDateString('ar-EG', { day: 'numeric', month: 'short' }) +
+         ' — ' + n.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+}
+
+/* ── مسح collection كامل من السحابة ── */
+async function cloudClearCollection(name) {
+  if (!CLOUD.online) return false;
+  try {
+    const snap = await _fsdb.collection(name).get();
+    const batch = _fsdb.batch();
+    snap.docs.forEach(function (d) { batch.delete(d.ref); });
+    await batch.commit();
+    return true;
+  } catch (e) { cloudError(e); return false; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   🔄 الدوال المُغطّاة — نسخ سحابية من نفس دوال الموقع
+   (بنفس الأسماء بالظبط — كل الموقع هيتعامل مع السحابة تلقائيًا)
+   ══════════════════════════════════════════════════════════════ */
+
+/* الأسئلة المضافة — من السحابة */
+function getCustom() {
+  if (CLOUD.online) return CLOUD.questions.slice();
+  const arr = readJSON(K.custom, []);
+  if (!Array.isArray(arr)) return [];
+  return arr.map(normalizeQ).filter(Boolean);
+}
+
+/* حفظ الأسئلة — يكتب في السحابة + نسخة احتياطية محلية */
+async function saveCustom(arr) {
+  writeJSON(K.custom, arr);
+  const done = await cloudSyncQuestions(arr);
+  if (!done && CLOUD.online) toast('⚠️ تعذر الحفظ في السحابة — اتخزن محليًا');
+}
+
+/* بيانات الاختبار — من السحابة */
+function quizMeta() {
+  let m = null;
+  if (CLOUD.online && CLOUD.meta) m = CLOUD.meta;
+  else m = readJSON(K.meta, null) || {};
+  return {
+    title: m.title || 'اختبار المعهد',
+    description: m.description || 'اختبار تفاعلي بتقييم فوري — كل سؤال يُقفل بعد الإجابة، ولا تنتقل للتالي إلا بعد الحل.'
+  };
+}
+
+/* النتائج — من السحابة */
+function getHistory() {
+  if (CLOUD.online) return CLOUD.results.slice();
+  const h = readJSON(K.history, []);
+  return Array.isArray(h) ? h : [];
+}
+
+/* إضافة نتيجة — سحابة + احتياطي محلي */
+async function pushHistory(entry) {
+  const hist = readJSON(K.history, []);
+  if (Array.isArray(hist)) { hist.push(entry); writeJSON(K.history, hist); }
+  await cloudPushResult(entry);
+}
+
+/* سجل الدخول — من السحابة */
+function getLogins() {
+  if (CLOUD.online) return CLOUD.logins.slice();
+  const l = readJSON(K.logins, []);
+  return Array.isArray(l) ? l : [];
+}
+
+/* تسجيل دخول — سحابة + احتياطي محلي */
+async function pushLogin(name) {
+  const list = readJSON(K.logins, []);
+  if (Array.isArray(list)) {
+    list.push({ name: name, time: loginStamp() });
+    if (list.length > 300) list.splice(0, list.length - 300);
+    writeJSON(K.logins, list);
+  }
+  await cloudPushLogin(name);
+}
+
+/* حفظ بيانات الاختبار — سحابة */
+async function saveMeta() {
+  const t = $('setTitle');
+  const d = $('setDesc');
+  const title = t ? t.value.trim() : '';
+  const desc = d ? d.value.trim() : '';
+
+  if (!title) { toast('اكتب عنوان الاختبار'); return; }
+
+  const meta = { title: title, description: desc };
+  writeJSON(K.meta, meta);
+  await cloudSaveMeta(meta);
+
+  toast('💾 تم حفظ بيانات الاختبار');
+  renderHome();
+  renderAdmin(false);
+}
+
+/* حذف نتيجة — يقبل index أو id (سحابة أو محلي) */
+async function delResult(idOrIdx) {
+  if (CLOUD.online) {
+    let docId = idOrIdx;
+    if (typeof idOrIdx === 'number') {
+      const row = CLOUD.results[idOrIdx];
+      docId = row ? row._id : null;
+    }
+    if (docId) await cloudDeleteResult(docId);
+  } else {
+    const rows = readJSON(K.history, []);
+    const idx = typeof idOrIdx === 'number' ? idOrIdx
+      : rows.findIndex(function (r) { return r && r._id === idOrIdx; });
+    if (idx >= 0 && idx < rows.length) {
+      rows.splice(idx, 1);
+      writeJSON(K.history, rows);
+    }
+  }
+  toast('🗑️ تم حذف النتيجة');
+  renderAdmin(false);
+}
+
+/* مسح كل النتائج — سحابة + محلي */
+function askClearHistory() {
+  confirmBox(
+    'مسح كل النتائج',
+    'هيتم مسح <b>كل سجل نتائج الطلاب</b> من السحابة ومن كل الأجهزة.<br>الخطوة دي مش بترجع.',
+    async function () {
+      writeJSON(K.history, []);
+      await cloudClearCollection('results');
+      toast('🗑️ تم مسح كل النتائج');
+      renderAdmin(false);
+    },
+    'امسح الكل', true
+  );
+}
+
+/* استعادة نسخة احتياطية — ترجع للسحابة أيضًا */
+function importAllFile(files) {
+  if (!files || !files.length) return;
+  const file = files[0];
+  const reader = new FileReader();
+
+  reader.onload = async function () {
+    let data = null;
+    try { data = JSON.parse(String(reader.result || '')); } catch (e) { data = null; }
+
+    if (!data || typeof data !== 'object') { toast('❌ الملف غير صالح'); return; }
+
+    confirmBox(
+      'استعادة نسخة',
+      'هيتم استبدال البيانات الحالية بالنسخة المختارة (في السحابة وعلى كل الأجهزة).<br><b>متأكد؟</b>',
+      async function () {
+        if (Array.isArray(data.questions)) {
+          const qs = data.questions.map(normalizeQ).filter(Boolean);
+          writeJSON(K.custom, qs);
+          await cloudSyncQuestions(qs);
+        }
+        if (data.meta) {
+          writeJSON(K.meta, data.meta);
+          await cloudSaveMeta(data.meta);
+        }
+        if (Array.isArray(data.baseHidden)) writeJSON(K.baseHidden, data.baseHidden);
+        if (typeof data.baseOff === 'boolean') writeJSON(K.baseOff, data.baseOff);
+
+        toast('✅ تم استعادة النسخة');
+        renderAdmin(false);
+        renderHome();
+      },
+      'استعادة'
+    );
+  };
+
+  reader.onerror = function () { toast('❌ مش قادر أقرأ الملف'); };
+  reader.readAsText(file, 'utf-8');
+}
+
+/* تصفير كامل — يمسح السحابة كمان */
+function askResetAll() {
+  confirmBox(
+    'تصفير كامل',
+    'هيتم مسح <b>كل البيانات</b> من السحابة ومن كل الأجهزة: الأسئلة، النتائج، الدخول، الإعدادات.<br><br>' +
+    'الخطوة دي <b>مش بترجع</b>. خُد نسخة احتياطية الأول.',
+    async function () {
+      [K.custom, K.history, K.logins, K.progress, K.baseHidden, K.baseOff, K.meta, K.pass, K.lastName].forEach(function (key) {
+        try { localStorage.removeItem(key); } catch (e) {}
+      });
+
+      if (CLOUD.online) {
+        await cloudClearCollection('questions');
+        await cloudClearCollection('results');
+        await cloudClearCollection('logins');
+      }
+
+      EX.qs = []; EX.ans = []; EX.i = 0;
+      EX.result = null; EX.finished = false;
+      ED = blankED();
+      QFILTER = '';
+      stopTimer();
+
+      toast('🧨 تم تصفير كل البيانات');
+      renderAdmin(false);
+      renderHome();
+    },
+    'صفّر الكل', true
+  );
+}
+
+/* ── تشغيل الاتصال ── */
+cloudInit();
+
+
+
+
+
+
+
+
+
+
 
 /* ✅ نهاية التطبيق */
 </script>
